@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'core',
     'user',
+    'sports_person',
 ]
 
 MIDDLEWARE = [

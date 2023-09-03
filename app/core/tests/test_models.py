@@ -2,6 +2,12 @@
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from sports_person.models import (
+    City,
+    Team,
+    RankSportsPerson,
+    SportsPerson,
+)
 
 
 class ModelTests(TestCase):
@@ -10,7 +16,7 @@ class ModelTests(TestCase):
     def test_create_user_with_email_successful(self):
         """Test creating a user an email is successful."""
         email = 'test@example.com'
-        password = 'testpass123'
+        password = 'test_pass123'
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
@@ -45,3 +51,44 @@ class ModelTests(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_city(self):
+        """Tests create DB city."""
+        city = City.objects.create(city='Львів')
+
+        self.assertEqual(str(city), city.city)
+
+    def test_create_team(self):
+        """Tests create DB team."""
+        team = Team.objects.create(team='Джуніор')
+
+        self.assertEqual(str(team), team.team)
+
+    def test_create_rank(self):
+        """Tests create DB rank."""
+        rank = RankSportsPerson.objects.create(rank='Майстер спорту')
+
+        self.assertEqual(str(rank), rank.rank)
+
+    def test_create_sports_person(self):
+        """Tests create DB sports person."""
+        first_name = 'Катерина'
+        team_tmp = 'Джуніор'
+        city = City.objects.create(city='Тернопіль')
+        team = Team.objects.create(team=team_tmp)
+        person = SportsPerson.objects.create(
+            first_name=first_name,
+            last_name='Парадюк',
+            birth_day='2005-04-02',
+            city=city,
+            team=team,
+            rank=None,
+        )
+
+        self.assertEqual(person.id, 1)
+        self.assertEqual(person.first_name, first_name)
+        self.assertEqual(SportsPerson.objects.get(id=1).team, team)
+        self.assertEqual(SportsPerson.objects.get(
+            first_name=first_name).team, team)
+        self.assertEqual(SportsPerson.objects.get(
+            first_name='Катерина').team, team)
