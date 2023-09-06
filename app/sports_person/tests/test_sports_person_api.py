@@ -18,18 +18,26 @@ from sports_person.serializers import SportsPersonSerializer
 
 
 # SPORTS_PERSON_URL = reverse('sports_person:sports_person-list')
-SPORTS_PERSON_URL = reverse('sports_person:sportsperson-list')
+SPORTS_PERSON_URL = reverse('sports_person:sports_person-list')
+
+
+def create_city(city, **params):
+    """create_city"""
+    defaults = {
+        'city': city
+    }
+    defaults.update(params)
 
 
 # def create_sports_person(user, **params):
-def create_sports_person(**params):
+def create_sports_person(city, **params):
     """Create and return a simple sports_person"""
     defaults = {
         'first_name': 'Kate',
         'last_name': 'Par',
         'birth_day': '2005-04-02',
         'rank': None,
-        'city': None,
+        'city': city,
         'team': None,
     }
     defaults.update(params)
@@ -67,10 +75,27 @@ class PrivateSportsPersonApiTest(TestCase):
         """Test retrieving a list of sports_people."""
         # create_sports_person(user=self.user)
         # create_sports_person(user=self.user)
-        create_sports_person()
-        create_sports_person()
+        city = None
+        create_sports_person(city)
+        create_sports_person(city)
 
         res = self.client.get(SPORTS_PERSON_URL)
+
+        sports_people = SportsPerson.objects.all().order_by('-id')
+        serializer = SportsPersonSerializer(sports_people, many=True)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+    def test_retrieve_sports_person_with_city(self):
+        """Test retrieve a list of city"""
+        city_name = 'Львів'
+        create_city(city_name)
+        create_sports_person(1)
+
+        res = self.client.get(SPORTS_PERSON_URL)
+
+        # cities = City.objects.all().order_by('-id')
+        # print(str(cities))
 
         sports_people = SportsPerson.objects.all().order_by('-id')
         serializer = SportsPersonSerializer(sports_people, many=True)
