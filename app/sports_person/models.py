@@ -3,7 +3,7 @@ from django.db import models
 
 class RankSportsPerson(models.Model):
     """List of ranks sports level - must be realize in future"""
-    rank = models.CharField(max_length=50)
+    rank = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.rank
@@ -11,7 +11,7 @@ class RankSportsPerson(models.Model):
 
 class City(models.Model):
     """List of cities - must be realize in future"""
-    city = models.CharField(max_length=50)
+    city = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.city
@@ -19,7 +19,7 @@ class City(models.Model):
 
 class Team(models.Model):
     """List of teams - must be realize in future"""
-    team = models.CharField(max_length=50)
+    team = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.team

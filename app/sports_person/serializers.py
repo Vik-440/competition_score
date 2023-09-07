@@ -55,7 +55,11 @@ class SportsPersonSerializer(serializers.ModelSerializer):
     """Serializer for sports_person."""
 
     city = serializers.SlugRelatedField(
-        slug_field='city', queryset=City.objects)
+        slug_field='city',
+        queryset=City.objects,
+        allow_null=True,
+        required=False
+    )
 
     class Meta:
         model = SportsPerson
