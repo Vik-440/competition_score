@@ -3,19 +3,15 @@
 from rest_framework import serializers
 import django_filters
 
-from sports_person.models import (
-    SportsPerson,
-    RankSportsPerson,
-    City,
-    Team,
-)
+from sports_person.models import SportsPerson
 
 
 class SportsPersonFilter(django_filters.FilterSet):
     city = django_filters.CharFilter(
-        field_name='city__city', lookup_expr='icontains')
+        field_name='city', lookup_expr='icontains')
+    # field_name='city__city', lookup_expr='icontains')
     team = django_filters.CharFilter(
-        field_name='team__team', lookup_expr='icontains')
+        field_name='team', lookup_expr='icontains')
     last_name = django_filters.CharFilter(
         field_name='last_name', lookup_expr='icontains')
 
@@ -24,42 +20,8 @@ class SportsPersonFilter(django_filters.FilterSet):
         fields = ['city', 'team', 'last_name']
 
 
-class CitySerializer(serializers.ModelSerializer):
-    """Serializer for city"""
-
-    class Meta:
-        model = City
-        fields = ['id', 'city']
-        read_only_fields = ['id']
-
-
-class RankSerializer(serializers.ModelSerializer):
-    """Serializer for rank"""
-
-    class Meta:
-        model = RankSportsPerson
-        fields = ['id', 'rank']
-        read_only_fields = ['id']
-
-
-class TeamSerializer(serializers.ModelSerializer):
-    """Serializer for team"""
-
-    class Meta:
-        model = Team
-        fields = ['id', 'team']
-        read_only_fields = ['id']
-
-
 class SportsPersonSerializer(serializers.ModelSerializer):
     """Serializer for sports_person."""
-
-    city = serializers.SlugRelatedField(
-        slug_field='city',
-        queryset=City.objects,
-        allow_null=True,
-        required=False
-    )
 
     class Meta:
         model = SportsPerson

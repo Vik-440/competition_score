@@ -8,12 +8,7 @@ from rest_framework.reverse import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from sports_person.models import (
-    SportsPerson,
-    # RankSportsPerson,
-    City,
-    # Team,
-)
+from sports_person.models import SportsPerson
 
 from sports_person.serializers import SportsPersonSerializer
 
@@ -22,28 +17,18 @@ from sports_person.serializers import SportsPersonSerializer
 SPORTS_PERSON_URL = reverse('sports_person:sportsperson-list')
 
 
-def create_city(city, **params):
-    """create_city"""
-    defaults = {
-        'city': city
-    }
-    defaults.update(params)
-
-
-# def create_sports_person(user, **params):
-def create_sports_person(city, **params):
+def create_sports_person(**params):
     """Create and return a simple sports_person"""
     defaults = {
         'first_name': 'Kate',
         'last_name': 'Par',
         'birth_day': '2005-04-02',
         'rank': None,
-        'city': city,
-        'team': None,
+        'city': 'Lviv',
+        'team': 'Angels',
     }
     defaults.update(params)
 
-    # sports_person = SportsPerson.objects.create(user=user, **defaults)
     sports_person = SportsPerson.objects.create(**defaults)
     return sports_person
 
@@ -76,9 +61,9 @@ class PrivateSportsPersonApiTest(TestCase):
         """Test retrieving a list of sports_people."""
         # create_sports_person(user=self.user)
         # create_sports_person(user=self.user)
-        city = None
-        create_sports_person(city)
-        create_sports_person(city)
+        # city = None
+        create_sports_person()
+        create_sports_person()
 
         res = self.client.get(SPORTS_PERSON_URL)
 
@@ -89,9 +74,7 @@ class PrivateSportsPersonApiTest(TestCase):
 
     def test_retrieve_sports_person_with_city(self):
         """Test retrieve a list of city"""
-        city = City.objects.create(city='Львів')
-        # create_city(city)
-        create_sports_person(city)
+        create_sports_person()
 
         res = self.client.get(SPORTS_PERSON_URL)
 

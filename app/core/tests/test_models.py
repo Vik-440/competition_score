@@ -2,12 +2,7 @@
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from sports_person.models import (
-    City,
-    Team,
-    RankSportsPerson,
-    SportsPerson,
-)
+from sports_person.models import SportsPerson
 
 
 class ModelTests(TestCase):
@@ -52,30 +47,12 @@ class ModelTests(TestCase):
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
 
-    def test_create_city(self):
-        """Tests create DB city."""
-        city = City.objects.create(city='Львів')
-
-        self.assertEqual(str(city), city.city)
-
-    def test_create_team(self):
-        """Tests create DB team."""
-        team = Team.objects.create(team='Джуніор')
-
-        self.assertEqual(str(team), team.team)
-
-    def test_create_rank(self):
-        """Tests create DB rank."""
-        rank = RankSportsPerson.objects.create(rank='Майстер спорту')
-
-        self.assertEqual(str(rank), rank.rank)
-
     def test_create_sports_person(self):
         """Tests create DB sports person."""
         first_name = 'Катерина'
         team_tmp = 'Джуніор'
-        city = City.objects.create(city='Тернопіль')
-        team = Team.objects.create(team=team_tmp)
+        city = 'Тернопіль'
+        team = team_tmp
         person = SportsPerson.objects.create(
             first_name=first_name,
             last_name='Парадюк',
