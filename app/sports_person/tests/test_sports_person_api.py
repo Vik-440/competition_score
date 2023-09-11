@@ -21,11 +21,11 @@ def create_sports_person(**params):
     """Create and return a simple sports_person"""
     defaults = {
         'first_name': 'Kate',
-        'last_name': 'Par',
+        'last_name': 'Paradiuk',
         'birth_day': '2005-04-02',
         'rank': None,
-        'city': 'Lviv',
-        'team': 'Angels',
+        'city': 'Kyiv',
+        'team': 'Junior',
     }
     defaults.update(params)
 
@@ -59,9 +59,6 @@ class PrivateSportsPersonApiTest(TestCase):
 
     def test_retrieve_sports_people(self):
         """Test retrieving a list of sports_people."""
-        # create_sports_person(user=self.user)
-        # create_sports_person(user=self.user)
-        # city = None
         create_sports_person()
         create_sports_person()
 
@@ -72,16 +69,57 @@ class PrivateSportsPersonApiTest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_retrieve_sports_person_with_city(self):
-        """Test retrieve a list of city"""
-        create_sports_person()
+    def test_create_sports_person_api(self):
+        """Test create one person"""
+        sports_person = {
+            'first_name': 'Kate',
+            'last_name': 'Paradiuk',
+            'birth_day': '2005-04-02',
+            'rank': 'Masters',
+            'city': 'Kyiv',
+            'team': 'Junior',
+        }
 
-        res = self.client.get(SPORTS_PERSON_URL)
+        res = self.client.post(SPORTS_PERSON_URL, sports_person, format='json')
 
-        sports_people = SportsPerson.objects.all().order_by('-id')
-        serializer = SportsPersonSerializer(sports_people, many=True)
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        people = self.client.get(SPORTS_PERSON_URL)
+        self.assertEqual(people.status_code, status.HTTP_200_OK)
+        for person_data in people.json():
+            del person_data['id']
+            self.assertIn(person_data, [sports_person, ])
+        # self.assertEqual(person_data, sports_person)
+
+    def test_create_list_sports_people_api(self):
+        """Test create list of people"""
+        sports_people = [
+            {
+                'first_name': 'Kate',
+                'last_name': 'Paradiuk',
+                'birth_day': '2005-04-02',
+                'rank': 'Masters',
+                'city': 'Kyiv',
+                'team': 'Junior',
+            },
+            {
+                'first_name': 'Olga',
+                'last_name': 'Test',
+                'birth_day': '2000-08-05',
+                'rank': 'Masters',
+                'city': 'Lviv',
+                'team': 'Angels',
+            },
+        ]
+
+        res = self.client.post(SPORTS_PERSON_URL, sports_people, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        people = self.client.get(SPORTS_PERSON_URL)
+        self.assertEqual(people.status_code, status.HTTP_200_OK)
+        for person_data in people.json():
+            del person_data['id']
+            self.assertIn(person_data, sports_people)
 
     # def test_sports_person_list_limited_to_user(self):
     #     """Test list of sports_people is limited to auth user."""

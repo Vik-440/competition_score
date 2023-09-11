@@ -9,7 +9,6 @@ from sports_person.models import SportsPerson
 class SportsPersonFilter(django_filters.FilterSet):
     city = django_filters.CharFilter(
         field_name='city', lookup_expr='icontains')
-    # field_name='city__city', lookup_expr='icontains')
     team = django_filters.CharFilter(
         field_name='team', lookup_expr='icontains')
     last_name = django_filters.CharFilter(
@@ -26,10 +25,8 @@ class SportsPersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = SportsPerson
         fields = [
-            'id', 'first_name', 'last_name',
-            'birth_day', 'rank',
-            'city',
-            'team',
+            'id', 'first_name', 'last_name', 'birth_day',
+            'rank', 'city', 'team',
         ]
         read_only_fields = ['id']
 

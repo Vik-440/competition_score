@@ -12,6 +12,7 @@ from sports_person import views
 
 router = DefaultRouter()
 router.register('', views.SportsPersonViewSet)
+# router.register('', views.SportsPeopleListViewSet)
 
 app_name = 'sports_person'
 
