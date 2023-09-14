@@ -1,7 +1,9 @@
 """"Serializers for sports_person APIs"""
 
+# from django.forms import ValidationError
 from rest_framework import serializers
 import django_filters
+import re
 
 from sports_person.models import SportsPerson
 
@@ -30,8 +32,25 @@ class SportsPersonSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id']
 
+    # def normalize_fields(cls, value):
+    #     """Normalize data for person"""
+    #     value = ' '.join([word.capitalize() for word in value.split(' ')])
+    #     value = re.sub(
+    #         r"\'([A-Za-zА-Яа-я])",
+    #         lambda m: "'" + m.group(1).lower(), value)
+    #     value = re.sub(
+    #         r"\-([A-Za-zА-Яа-я])",
+    #         lambda m: "-" + m.group(1).capitalize(), value)
+
     def validate_first_name(self, value):
         """Validate and capitalize first_name."""
+        # value = ' '.join([word.capitalize() for word in value.split(' ')])
+        # value = re.sub(
+        #     r"\'([A-Za-zА-Яа-я])",
+        #     lambda m: "'" + m.group(1).lower(), value)
+        # value = re.sub(
+        #     r"\-([A-Za-zА-Яа-я])",
+        #     lambda m: "-" + m.group(1).capitalize(), value)
         return value.capitalize()
 
     def validate_last_name(self, value):

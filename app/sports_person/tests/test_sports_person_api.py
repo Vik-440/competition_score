@@ -121,6 +121,41 @@ class PrivateSportsPersonApiTest(TestCase):
             del person_data['id']
             self.assertIn(person_data, sports_people)
 
+    def test_create_duplicate_sports_person_api(self):
+        """Test create duplicate of person"""
+        sports_person = {
+            'first_name': 'Kate',
+            'last_name': 'Paradiuk',
+            'birth_day': '2005-04-02',
+            'rank': 'Masters',
+            'city': 'Kyiv',
+            'team': 'Junior',
+        }
+
+        res = self.client.post(SPORTS_PERSON_URL, sports_person, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        sports_person_dup = {
+            'first_name': 'Kate',
+            'last_name': 'Paradiuk',
+            'birth_day': '2005-04-02',
+            'rank': 'Masters',
+            'city': 'Kyiv',
+            'team': 'Junior',
+        }
+
+        res = self.client.post(
+            SPORTS_PERSON_URL, sports_person_dup, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+        people = self.client.get(SPORTS_PERSON_URL)
+        self.assertEqual(people.status_code, status.HTTP_200_OK)
+        for person_data in people.json():
+            del person_data['id']
+            self.assertIn(person_data, [sports_person, ])
+
     # def test_sports_person_list_limited_to_user(self):
     #     """Test list of sports_people is limited to auth user."""
     #     other_user = get_user_model().objects.create_user(
