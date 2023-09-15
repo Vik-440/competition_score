@@ -144,7 +144,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.User'
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',# noqa
-    # 'PAGE_SIZE': 10,
+    'DEFAULT_PAGINATION_CLASS': \
+        'rest_framework.pagination.LimitOffsetPagination',# noqa
+    'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+# DRF_SPECTACULAR_SETTINGS = {
+#     "auto_schema_generation": True,
+#     "title": "My API",
+#     "version": "1.0.0",
+#     "auto_schema_generation_dirs": [
+#         os.path.join(BASE_DIR, "app.app.docs.sports_person_schema.yml"),
+#     ],
+# }
+
+# SPECTACULAR_SETTINGS = {
+#     'TITLE': 'TODO List API',
+#     'DESCRIPTION': 'API documentation for our app',
+#     'VERSION': '1.0.0',
+#     'SERVE_INCLUDE_SCHEMA': False,
+#     'COMPONENT_SPLIT_REQUEST': True
+#     # OTHER SETTINGS
+# }

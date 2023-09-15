@@ -67,7 +67,7 @@ class PrivateSportsPersonApiTest(TestCase):
         sports_people = SportsPerson.objects.all().order_by('-id')
         serializer = SportsPersonSerializer(sports_people, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.data['results'], serializer.data)
 
     def test_create_sports_person_api(self):
         """Test create one person"""
@@ -86,7 +86,7 @@ class PrivateSportsPersonApiTest(TestCase):
 
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
-        for person_data in people.json():
+        for person_data in people.json()['results']:
             del person_data['id']
             self.assertIn(person_data, [sports_person, ])
         # self.assertEqual(person_data, sports_person)
@@ -117,7 +117,7 @@ class PrivateSportsPersonApiTest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
-        for person_data in people.json():
+        for person_data in people.json()['results']:
             del person_data['id']
             self.assertIn(person_data, sports_people)
 
@@ -152,7 +152,7 @@ class PrivateSportsPersonApiTest(TestCase):
 
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
-        for person_data in people.json():
+        for person_data in people.json()['results']:
             del person_data['id']
             self.assertIn(person_data, [sports_person, ])
 
