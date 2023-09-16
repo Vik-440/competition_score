@@ -11,7 +11,7 @@ from sports_person.models import SportsPerson
 def normalize_fields(data, fields_to_normalize):
     """Normalize data for product"""
     for field in fields_to_normalize:
-        if data[field]:
+        if field in data:
             data[field] = ' '.join(
                 [word.capitalize() for word in data[field].split(' ')])
             data[field] = re.sub(
