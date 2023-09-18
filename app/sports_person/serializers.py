@@ -9,7 +9,7 @@ from sports_person.models import SportsPerson
 
 
 def normalize_fields(data, fields_to_normalize):
-    """Normalize data for product"""
+    """Normalize data for Sports Person."""
     for field in fields_to_normalize:
         if field in data:
             data[field] = ' '.join(

@@ -59,7 +59,7 @@ class ModelTests(TestCase):
             birth_day='2005-04-02',
             city=city,
             team=team,
-            rank=None,
+            rank='Master',
         )
 
         self.assertEqual(person.id, 1)

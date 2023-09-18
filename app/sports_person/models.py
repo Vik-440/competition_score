@@ -19,7 +19,7 @@ class SportsPerson(models.Model):
 
     def __str__(self):
         # return self.last_name
-        return f'{self.last_name} {self.first_name}, {self.team}, {self.team}'
+        return f'{self.last_name} {self.first_name}, {self.rank}, {self.team}'
 
     class Meta:
         unique_together = ('first_name', 'last_name', 'birth_day')

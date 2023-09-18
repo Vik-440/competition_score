@@ -1,3 +1,7 @@
+""""Django admin customization judge_person."""
+
 from django.contrib import admin
 
-# Register your models here.
+from judge_person import models
+
+admin.site.register(models.JudgePerson)

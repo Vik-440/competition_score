@@ -10,8 +10,6 @@ class JudgePerson(models.Model):
     last_name = models.CharField(
         max_length=50, validators=[MinLengthValidator(3)])
     birth_day = models.DateField()
-    # city = models.CharField(
-    #     max_length=50, validators=[MinLengthValidator(3)], default=None)
     team = models.CharField(
         max_length=50, validators=[MinLengthValidator(3)], default=None)
     rank = models.CharField(
@@ -22,4 +20,4 @@ class JudgePerson(models.Model):
         return f'{self.last_name} {self.first_name}, {self.rank}'
 
     class Meta:
-        unique_together = ('first_name', 'last_name', 'birth_day')
+        unique_together = ('first_name', 'last_name', 'rank')

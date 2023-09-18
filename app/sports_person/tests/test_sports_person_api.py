@@ -2,7 +2,6 @@
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-# from django.urls import reverse
 from rest_framework.reverse import reverse
 
 from rest_framework import status
@@ -23,7 +22,7 @@ def create_sports_person(**params):
         'first_name': 'Kate',
         'last_name': 'Paradiuk',
         'birth_day': '2005-04-02',
-        'rank': None,
+        'rank': 'Masters',
         'city': 'Kyiv',
         'team': 'Junior',
     }
