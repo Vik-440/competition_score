@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user',
     'sports_person',
     'judge_person',
+    'competition',
 ]
 
 MIDDLEWARE = [
