@@ -25,6 +25,9 @@ def create_sports_person(**params):
         'rank': 'Masters',
         'city': 'Kyiv',
         'team': 'Junior',
+        'gender': None,
+        'weight_kg': None,
+        'height_cm': None,
     }
     defaults.update(params)
 
@@ -77,6 +80,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Masters',
             'city': 'Kyiv',
             'team': 'Junior',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         res = self.client.post(SPORTS_PERSON_URL, sports_person, format='json')
@@ -98,6 +104,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Masters',
                 'city': 'Kyiv',
                 'team': 'Junior',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Olga',
@@ -106,6 +115,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Masters',
                 'city': 'Lviv',
                 'team': 'Angels',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
         ]
 
@@ -127,6 +139,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Masters',
             'city': 'Kyiv',
             'team': 'Junior',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         res = self.client.post(SPORTS_PERSON_URL, sports_person, format='json')
@@ -140,6 +155,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Masters',
             'city': 'Kyiv',
             'team': 'Junior',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         res = self.client.post(
@@ -161,6 +179,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Masters',
             'city': 'Kyiv',
             'team': 'Junior',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         res = self.client.post(SPORTS_PERSON_URL, sports_person, format='json')
@@ -179,6 +200,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Masters',
             'city': 'Kyiv',
             'team': 'Junior',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         SPORTS_PERSON_ID = f'{SPORTS_PERSON_URL}{person_id}/'
@@ -199,6 +223,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Masters',
             'city': 'Kyiv',
             'team': 'Junior',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         res = self.client.post(SPORTS_PERSON_URL, sports_person, format='json')
@@ -232,6 +259,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Masters',
             'city': 'Kyiv',
             'team': 'Junior',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         res = self.client.post(SPORTS_PERSON_URL, sports_person, format='json')
@@ -261,6 +291,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Masters',
                 'city': 'Kyiv',
                 'team': 'Junior',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Ariana',
@@ -269,6 +302,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Pre_Masters',
                 'city': 'Lviv',
                 'team': 'Angels',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Ulia',
@@ -277,6 +313,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Coach',
                 'city': 'Ujgorod',
                 'team': 'Pigs',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Anna',
@@ -285,6 +324,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Junior',
                 'city': 'Dnipro',
                 'team': 'Birds',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             }
         ]
 
@@ -308,6 +350,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Junior',
             'city': 'Dnipro',
             'team': 'Birds',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         self.assertEqual(searched_person, res_person)
 
@@ -322,6 +367,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Coach',
             'city': 'Ujgorod',
             'team': 'Pigs',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         self.assertEqual(searched_person, res_person)
 
@@ -336,6 +384,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Pre_Masters',
             'city': 'Lviv',
             'team': 'Angels',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         self.assertEqual(searched_person, res_person)
 
@@ -350,6 +401,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Masters',
             'city': 'Kyiv',
             'team': 'Junior',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         self.assertEqual(searched_person, res_person)
 
@@ -364,6 +418,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Junior',
             'city': 'Dnipro',
             'team': 'Birds',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         self.assertEqual(searched_person, res_person)
 
@@ -378,6 +435,9 @@ class PrivateSportsPersonApiTest(TestCase):
             'rank': 'Coach',
             'city': 'Ujgorod',
             'team': 'Pigs',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         self.assertEqual(searched_person, res_person)
 
@@ -391,6 +451,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Masters',
                 'city': 'Kyiv',
                 'team': 'Junior',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Ariana',
@@ -399,6 +462,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Pre_Masters',
                 'city': 'Lviv',
                 'team': 'Angels',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Anna',
@@ -407,6 +473,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Junior',
                 'city': 'Dnipro',
                 'team': 'Birds',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Ulia',
@@ -415,6 +484,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Coach',
                 'city': 'Ujgorod',
                 'team': 'Pigs',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             }
         ]
 
@@ -452,6 +524,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Masters',
                 'city': 'Kyiv',
                 'team': 'Junior',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Ariana',
@@ -460,6 +535,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Pre_Masters',
                 'city': 'Lviv',
                 'team': 'Angels',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Anna',
@@ -468,6 +546,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Junior',
                 'city': 'Dnipro',
                 'team': 'Birds',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             },
             {
                 'first_name': 'Ulia',
@@ -476,6 +557,9 @@ class PrivateSportsPersonApiTest(TestCase):
                 'rank': 'Coach',
                 'city': 'Ujgorod',
                 'team': 'Pigs',
+                'gender': None,
+                'weight_kg': None,
+                'height_cm': None,
             }
         ]
 

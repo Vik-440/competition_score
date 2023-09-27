@@ -55,7 +55,8 @@ class SportsPersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SportsPerson
-        fields = [
-            'id', 'first_name', 'last_name', 'birth_day',
-            'rank', 'city', 'team',]
+        fields = '__all__'
+        # fields = [
+        #     'id', 'first_name', 'last_name', 'birth_day',
+        #     'rank', 'city', 'team',]
         read_only_fields = ['id']

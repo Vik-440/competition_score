@@ -34,6 +34,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         judge_person_2 = {
             'first_name': 'Olha',
@@ -42,6 +45,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Masters',
             'team': 'Junior',
             'license_expiration_date': '2023-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         JudgePerson.objects.create(**judge_person_1)
@@ -66,6 +72,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         res = self.client.post(
             JUDGE_PERSON_URL,
@@ -89,6 +98,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         res = self.client.post(
             JUDGE_PERSON_URL,
@@ -124,6 +136,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         judge_person_2 = {
             'first_name': 'Olha',
@@ -132,6 +147,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Masters',
             'team': 'Junior',
             'license_expiration_date': '2023-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
 
         JudgePerson.objects.create(**judge_person_1)
@@ -170,6 +188,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         res = self.client.post(
             JUDGE_PERSON_URL,
@@ -191,6 +212,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         JUDGE_PERSON_ID = f'{JUDGE_PERSON_URL}{judge_id}/'
         res = self.client.put(
@@ -215,6 +239,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         res = self.client.post(
             JUDGE_PERSON_URL,
@@ -257,6 +284,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         res = self.client.post(
             JUDGE_PERSON_URL,
@@ -290,6 +320,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         res = self.client.post(
             JUDGE_PERSON_URL,
@@ -322,6 +355,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         res = self.client.post(
             JUDGE_PERSON_URL,
@@ -355,6 +391,9 @@ class PrivateJudgePersonApiTest(TestCase):
             'rank': 'Super Masters',
             'team': 'Angels',
             'license_expiration_date': '2025-01-01',
+            'gender': None,
+            'weight_kg': None,
+            'height_cm': None,
         }
         res = self.client.post(
             JUDGE_PERSON_URL,

@@ -4,6 +4,10 @@ from django.core.validators import MinLengthValidator
 
 class SportsPerson(models.Model):
     """SportsPerson object."""
+    GENDER_CHOICES = (
+        ('men', 'men'),
+        ('women', 'woman'),
+    )
 
     first_name = models.CharField(
         max_length=50, validators=[MinLengthValidator(3)])
@@ -11,11 +15,18 @@ class SportsPerson(models.Model):
         max_length=50, validators=[MinLengthValidator(3)])
     birth_day = models.DateField()
     city = models.CharField(
-        max_length=50, validators=[MinLengthValidator(3)], default=None)
+        max_length=50, validators=[MinLengthValidator(3)], null=True)
     team = models.CharField(
-        max_length=50, validators=[MinLengthValidator(3)], default=None)
+        max_length=50, validators=[MinLengthValidator(3)], null=True)
     rank = models.CharField(
-        max_length=50, validators=[MinLengthValidator(3)], default=None)
+        max_length=50, validators=[MinLengthValidator(3)], null=True)
+    gender = models.CharField(
+        max_length=15,
+        choices=GENDER_CHOICES,
+        null=True,
+    )
+    weight_kg = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    height_cm = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
     def __str__(self):
         # return self.last_name

@@ -65,11 +65,12 @@ class CompetitionSerializer(ModelSerializer):
 
     class Meta:
         model = Competition
-        fields = [
-            'id',
-            'competition_name',
-            'competition_city',
-            'competition_date',
-            'competition_qty_days',
-        ]
+        fields = '__all__'
+        # fields = [
+        #     'id',
+        #     'competition_name',
+        #     'competition_city',
+        #     'competition_date',
+        #     'competition_qty_days',
+        # ]
         read_only_fields = ['id']

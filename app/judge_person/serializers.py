@@ -57,8 +57,9 @@ class JudgePersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JudgePerson
-        fields = [
-            'id', 'first_name', 'last_name', 'birth_day',
-            'rank', 'license_expiration_date', 'team',
-        ]
+        fields = '__all__'
+        # fields = [
+        #     'id', 'first_name', 'last_name', 'birth_day',
+        #     'rank', 'license_expiration_date', 'team',
+        # ]
         read_only_fields = ['id']
