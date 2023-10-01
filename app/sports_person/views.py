@@ -14,7 +14,7 @@ from drf_spectacular.utils import (
 )
 from rest_framework.pagination import PageNumberPagination
 
-from sports_person.models import SportsPerson
+from sports_person.models import SportsPerson, PersonRank
 from sports_person import serializers
 
 
@@ -22,6 +22,25 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
+
+
+class PersonRankViewSet(viewsets.ModelViewSet):
+    """View for manage sports_person APIs."""
+    serializer_class = serializers.PersonRankSerializer
+    queryset = PersonRank.objects.all()
+    # filter_backends = [filters.DjangoFilterBackend]
+    # filterset_class = serializers.SportsPersonFilter
+
+    pagination_class = StandardResultsSetPagination
+
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    paginator = PageNumberPagination()
+
+    def get_queryset(self):
+        """Retrieve persons rank for auth user."""
+        return self.queryset.order_by('person_rank_weight')
 
 
 class SportsPersonViewSet(viewsets.ModelViewSet):
@@ -117,10 +136,10 @@ class SportsPersonViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'])
     def get_unique_ranks(self, request):
         """Getting unique ranks from DB sports_person."""
-        unique_ranks = SportsPerson.objects.distinct('rank')
+        unique_ranks = SportsPerson.objects.distinct('person_rank_id')
         unique_ranks_list = []
         for unique_rank in unique_ranks:
-            unique_ranks_list.append(unique_rank.rank)
+            unique_ranks_list.append(unique_rank.person_rank_id)
 
         return Response({'unique_ranks': unique_ranks_list})
 
@@ -222,51 +241,51 @@ class SportsPersonViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-    @extend_schema(
-        parameters=[
-            OpenApiParameter(
-                name='rank',
-                location=OpenApiParameter.QUERY,
-                description='route for fast enter rank of exists sportsperson',
-                required=True,
-                type=str
-            ),
-        ],
-        responses={
-            200: OpenApiTypes.OBJECT,
-        },
-        examples=[
-            OpenApiExample(
-                name="Auto complete field for rank with answer",
-                description="answer for query='r'",
-                value={
-                    "auto_complete_ranks": ["Master", "Junior"],
-                },
-                response_only=True
-            ),
-            OpenApiExample(
-                name="empty answer",
-                summary="Auto complete field for rank without answer",
-                description="answer for query='poor' ",
-                value={
-                    "auto_complete_ranks": [],
-                },
-                response_only=True
-            )
-        ],
-    )
-    @action(detail=False, methods=['GET'])
-    def autocomplete_ranks(self, request):
-        """Getting relevant ranks from search_key"""
-        query = request.GET.get('rank', '')
-        relevant_ranks_list = []
-        if query:
-            relevant_ranks = SportsPerson.objects.filter(
-                rank__icontains=query
-            )
-            for relevant_rank in relevant_ranks:
-                relevant_ranks_list.append(relevant_rank.rank)
-        return Response(
-            {'auto_complete_ranks': list(set(relevant_ranks_list))},
-            status=status.HTTP_200_OK
-        )
+    # @extend_schema(
+    #     parameters=[
+    #         OpenApiParameter(
+    #             name='rank',
+    #             location=OpenApiParameter.QUERY,
+    #             description='route for fast enter rank',
+    #             required=True,
+    #             type=str
+    #         ),
+    #     ],
+    #     responses={
+    #         200: OpenApiTypes.OBJECT,
+    #     },
+    #     examples=[
+    #         OpenApiExample(
+    #             name="Auto complete field for rank with answer",
+    #             description="answer for query='r'",
+    #             value={
+    #                 "auto_complete_ranks": ["Master", "Junior"],
+    #             },
+    #             response_only=True
+    #         ),
+    #         OpenApiExample(
+    #             name="empty answer",
+    #             summary="Auto complete field for rank without answer",
+    #             description="answer for query='poor' ",
+    #             value={
+    #                 "auto_complete_ranks": [],
+    #             },
+    #             response_only=True
+    #         )
+    #     ],
+    # )
+    # @action(detail=False, methods=['GET'])
+    # def autocomplete_ranks(self, request):
+    #     """Getting relevant ranks from search_key"""
+    #     query = request.GET.get('rank', '')
+    #     relevant_ranks_list = []
+    #     if query:
+    #         relevant_ranks = SportsPerson.objects.filter(
+    #             rank__icontains=query
+    #         )
+    #         for relevant_rank in relevant_ranks:
+    #             relevant_ranks_list.append(relevant_rank.rank)
+    #     return Response(
+    #         {'auto_complete_ranks': list(set(relevant_ranks_list))},
+    #         status=status.HTTP_200_OK
+    #     )
