@@ -51,7 +51,7 @@ class CompetitionFilter(FilterSet):
             'competition_name',
             'competition_city',
             'date_period_start',
-            'date_period_end'
+            'date_period_end',
         ]
 
 

@@ -58,7 +58,7 @@ class SportsPersonSerializer(ModelSerializer):
         normalize_fields(data, fields_to_normalize)
         return super().to_internal_value(data)
 
-    def get_person_rank_name(self, obj):
+    def get_person_rank_name(self, obj: SportsPerson) -> str:
         return obj.person_rank_id.person_rank_name \
             if obj.person_rank_id else None
 

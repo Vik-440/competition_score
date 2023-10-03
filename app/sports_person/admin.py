@@ -8,3 +8,4 @@ from django.contrib import admin
 from sports_person import models
 
 admin.site.register(models.SportsPerson)
+admin.site.register(models.PersonRank)

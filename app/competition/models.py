@@ -7,6 +7,7 @@ from django.db.models import (
     IntegerField,
 )
 from django.core.validators import MinLengthValidator
+from datetime import timedelta
 
 
 class Competition(Model):
@@ -24,10 +25,14 @@ class Competition(Model):
     competition_qty_days = IntegerField()
 
     def __str__(self):
-        return f'{self.competition_name}, \
-            {self.competition_city}, \
-            {self.competition_date}-\
-            {self.competition_date + self.competition_qty_days}'
+        end_date = self.competition_date + timedelta(
+            days=self.competition_qty_days)
+        return f'"id"={self.id}, {self.competition_name}, \
+# {self.competition_city}, {self.competition_date} - {end_date}'
+        # return {'id': self.id}
+
+    # def as_object(self):
+    #     return self
 
     class Mete:
         unique_together = (

@@ -32,27 +32,10 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name='api-schema'),
         name='api-docs',
     ),
-    # new module for testing create schemas
-    # path('openapi', get_schema_view(
-    #     title="Competition Score",
-    #     description="API for additional routes",
-    #     version="1.0.0"
-    # ), name='openapi-schema'),
-
-    # API Schema:
-    # path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    # # Optional UI:
-    # path(
-    #     'api/schema/swagger-ui/',
-    #     SpectacularSwaggerView.as_view(url_name='schema'),
-    #     name='swagger-ui'),
-    # path(
-    #     'api/schema/redoc/',
-    #     SpectacularRedocView.as_view(url_name='schema'),
-    #     name='redoc'),
 
     path('api/user/', include('user.urls')),
-    path('api/sports_person/', include('sports_person.urls')),
+    path('api/', include('sports_person.urls')),
     path('api/judge_person/', include('judge_person.urls')),
     path('api/competition/', include('competition.urls')),
+    path('api/', include('nomination.urls')),
 ]

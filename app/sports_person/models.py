@@ -15,6 +15,22 @@ from django.core.validators import (
 )
 
 
+class PersonRank(Model):
+    """SportPerson ranks"""
+    id = AutoField(primary_key=True)
+    person_rank_name = CharField(
+        max_length=50,
+        validators=[MinLengthValidator(3)],
+        null=False,
+        unique=True)
+    person_rank_weight = IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        null=False,)
+
+    def __str__(self):
+        return f'{self.person_rank_name}: {self.person_rank_weight}'
+
+
 class SportsPerson(Model):
     """SportsPerson object."""
     GENDER_CHOICES = (
@@ -31,7 +47,7 @@ class SportsPerson(Model):
         max_length=50, validators=[MinLengthValidator(3)], null=True)
     # rank = CharField(
     #     max_length=50, validators=[MinLengthValidator(3)], null=True)
-    person_rank_id = ForeignKey('PersonRank', on_delete=SET_NULL, null=True)
+    person_rank_id = ForeignKey(PersonRank, on_delete=SET_NULL, null=True)
     gender = CharField(
         max_length=15,
         choices=GENDER_CHOICES,
@@ -53,19 +69,3 @@ class SportsPerson(Model):
 
     class Meta:
         unique_together = ('first_name', 'last_name', 'birth_day')
-
-
-class PersonRank(Model):
-    """SportPerson ranks"""
-    id = AutoField(primary_key=True)
-    person_rank_name = CharField(
-        max_length=50,
-        validators=[MinLengthValidator(3)],
-        null=False,
-        unique=True)
-    person_rank_weight = IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
-        null=False,)
-
-    def __str__(self):
-        return f'{self.person_rank_name}: {self.person_rank_weight}'
