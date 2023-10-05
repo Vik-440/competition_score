@@ -28,12 +28,8 @@ class Competition(Model):
         end_date = self.competition_date + timedelta(
             days=self.competition_qty_days)
         return f'"id"={self.id}, {self.competition_name}, \
-# {self.competition_city}, {self.competition_date} - {end_date}'
-        # return {'id': self.id}
+{self.competition_city}, {self.competition_date} - {end_date}'
 
-    # def as_object(self):
-    #     return self
-
-    class Mete:
+    class Meta:
         unique_together = (
             'competition_name', 'competition_city', 'competition_date')

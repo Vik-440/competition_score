@@ -35,7 +35,6 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class NominationViewSet(ModelViewSet):
     """View for manage Nomination APIs"""
-    # queryset = Nomination.objects.select_related('competition').all()
     serializer_class = NominationSerializer
     queryset = Nomination.objects.all()
     # filter_backends = [filters.DjangoFilterBackend]

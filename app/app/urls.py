@@ -38,4 +38,6 @@ urlpatterns = [
     path('api/judge_person/', include('judge_person.urls')),
     path('api/competition/', include('competition.urls')),
     path('api/', include('nomination.urls')),
+    path('api/', include('squad.urls')),
+    path('api/', include('squad_person.urls')),
 ]

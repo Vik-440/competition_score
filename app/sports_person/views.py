@@ -42,6 +42,30 @@ class PersonRankViewSet(viewsets.ModelViewSet):
         """Retrieve persons rank for auth user."""
         return self.queryset.order_by('person_rank_weight')
 
+    @extend_schema(
+        responses={
+            200: OpenApiTypes.OBJECT,
+        },
+        examples=[
+            OpenApiExample(
+                name="unique ranks",
+                value={
+                    "unique_ranks": ["Master", "Junior", "no rank"],
+                },
+                response_only=True
+            ),
+        ],
+    )
+    @action(detail=False, methods=['GET'])
+    def get_unique_ranks(self, request):
+        """Getting unique ranks from DB person rank."""
+        unique_ranks = PersonRank.objects.distinct('person_rank_name')
+        unique_ranks_list = []
+        for unique_rank in unique_ranks:
+            unique_ranks_list.append(unique_rank.person_rank_name)
+
+        return Response({'unique_ranks': unique_ranks_list})
+
 
 class SportsPersonViewSet(viewsets.ModelViewSet):
     """View for manage sports_person APIs."""
@@ -118,30 +142,6 @@ class SportsPersonViewSet(viewsets.ModelViewSet):
         for unique_team in team:
             unique_teams_list.append(unique_team.team)
         return Response({'unique_teams': unique_teams_list})
-
-    @extend_schema(
-        responses={
-            200: OpenApiTypes.OBJECT,
-        },
-        examples=[
-            OpenApiExample(
-                name="unique ranks",
-                value={
-                    "unique_ranks": ["Master", "Junior", "no rank"],
-                },
-                response_only=True
-            ),
-        ],
-    )
-    @action(detail=False, methods=['GET'])
-    def get_unique_ranks(self, request):
-        """Getting unique ranks from DB sports_person."""
-        unique_ranks = SportsPerson.objects.distinct('person_rank_id')
-        unique_ranks_list = []
-        for unique_rank in unique_ranks:
-            unique_ranks_list.append(unique_rank.person_rank_id)
-
-        return Response({'unique_ranks': unique_ranks_list})
 
     @extend_schema(
         parameters=[

@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'judge_person',
     'competition',
     'nomination',
+    'squad',
+    'squad_person'
 ]
 
 MIDDLEWARE = [
