@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'core',
     'user',
     'sports_person',
+    # 'person_rank',
     'judge_person',
     'competition',
     'nomination',

@@ -68,44 +68,52 @@ class SquadPersonSerializer(ModelSerializer):
             raise ValidationError({'sports_person_id': 'Invalid gender.'})
 
         # Validate the age.
-        if attrs['sports_person_id'].birth_day < (
-            nomination.nomination_start_date_time - (timedelta(
-                days=condition_performance.max_age_person * 365))):
-            raise ValidationError({
-                'sports_person_id': 'The sports person is too old.'})
-        if attrs['sports_person_id'].birth_day > (
+        if condition_performance.max_age_person is not None:
+            # print(nomination.nomination_start_date_time - timedelta(
+            #         days=condition_performance.max_age_person * 365).date())
+            if attrs['sports_person_id'].birth_day < (
                 nomination.nomination_start_date_time - timedelta(
-                    days=condition_performance.min_age_person * 365)):
-            raise ValidationError({'sports_person_id': (
-                'The sports person is too young.')})
+                    days=condition_performance.max_age_person * 365)).date():
+                raise ValidationError({
+                    'sports_person_id': 'The sports person is too old.'})
+        if condition_performance.min_age_person is not None:
+            if attrs['sports_person_id'].birth_day > (
+                nomination.nomination_start_date_time - timedelta(
+                    days=condition_performance.min_age_person * 365)).date():
+                raise ValidationError({
+                    'sports_person_id': ('The sports person is too young.')})
 
         # Validate the weight.
-        if attrs['sports_person_id'].weight_kg < (
-                condition_performance.min_weight_person):
-            raise ValidationError({'sports_person_id': (
-                'The sports person is too light.')})
-        if attrs['sports_person_id'].weight_kg > (
-                condition_performance.max_weight_person):
-            raise ValidationError({'sports_person_id': (
-                'The sports person is too heavy.')})
+        if condition_performance.min_weight_person is not None:
+            if attrs['sports_person_id'].weight_kg < (
+                    condition_performance.min_weight_person):
+                raise ValidationError({'sports_person_id': (
+                    'The sports person is too light.')})
+        if condition_performance.max_weight_person is not None:
+            if attrs['sports_person_id'].weight_kg > (
+                    condition_performance.max_weight_person):
+                raise ValidationError({'sports_person_id': (
+                    'The sports person is too heavy.')})
 
         # Validate the height.
-        if attrs['sports_person_id'].height_cm < (
-                condition_performance.min_height_person):
-            raise ValidationError({'sports_person_id': (
-                'The sports person is too short.')})
-        if attrs['sports_person_id'].height_cm > (
-                condition_performance.max_height_person):
-            raise ValidationError({'sports_person_id': (
-                'The sports person is too tall.')})
+        if condition_performance.min_height_person is not None:
+            if attrs['sports_person_id'].height_cm < (
+                    condition_performance.min_height_person):
+                raise ValidationError({'sports_person_id': (
+                    'The sports person is too short.')})
+        if condition_performance.min_height_person is not None:
+            if attrs['sports_person_id'].height_cm > (
+                    condition_performance.max_height_person):
+                raise ValidationError({'sports_person_id': (
+                    'The sports person is too tall.')})
 
         # Validate the rank.
-        if condition_performance.min_rank_person:
+        if condition_performance.min_rank_person is not None:
             if attrs['sports_person_id'].person_rank_id.pk < (
                     condition_performance.min_rank_person.pk):
                 raise ValidationError({'sports_person_id': (
                     'The sports person\'s rank is too low.')})
-        if condition_performance.max_rank_person:
+        if condition_performance.min_rank_person is not None:
             if attrs['sports_person_id'].person_rank_id.pk > (
                     condition_performance.max_rank_person.pk):
                 raise ValidationError({'sports_person_id': (

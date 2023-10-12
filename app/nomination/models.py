@@ -40,37 +40,43 @@ class ConditionPerformance(Model):
     nomination_id = ForeignKey(Nomination, on_delete=CASCADE, null=False)
     men_person = BooleanField(default=True)
     women_person = BooleanField(default=True)
-    min_qty_person = IntegerField(default=1)
-    max_qty_person = IntegerField(default=99)
+    min_qty_person = IntegerField(
+        default=None, null=True,
+        validators=[MinValueValidator(0)]
+    )
+    max_qty_person = IntegerField(
+        default=None, null=True,
+        validators=[MinValueValidator(0)]
+    )
     min_age_person = IntegerField(
-        default=1,
+        default=None,
         validators=[MinValueValidator(0), MaxValueValidator(250)],
-        null=False,
+        null=True,
     )
     max_age_person = IntegerField(
-        default=250,
+        default=None,
         validators=[MinValueValidator(0), MaxValueValidator(250)],
-        null=False,
+        null=True,
     )
     min_weight_person = IntegerField(
-        default=1,
+        default=None,
         validators=[MinValueValidator(1), MaxValueValidator(250)],
-        null=False,
+        null=True,
     )
     max_weight_person = IntegerField(
-        default=250,
+        default=None,
         validators=[MinValueValidator(1), MaxValueValidator(250)],
-        null=False,
+        null=True,
     )
     min_height_person = IntegerField(
-        default=1,
+        default=None,
         validators=[MinValueValidator(1), MaxValueValidator(250)],
-        null=False,
+        null=True,
     )
     max_height_person = IntegerField(
-        default=250,
+        default=None,
         validators=[MinValueValidator(1), MaxValueValidator(250)],
-        null=False,
+        null=True,
     )
     min_rank_person = ForeignKey(
         PersonRank,
