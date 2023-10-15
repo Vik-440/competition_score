@@ -118,7 +118,9 @@ class SportsPersonViewSet(viewsets.ModelViewSet):
         for unique_cities in unique_cities:
             unique_cities_list.append(unique_cities.city)
 
-        return Response({'unique_cities': unique_cities_list})
+        return Response(
+            {'unique_cities': unique_cities_list},
+            status=status.HTTP_200_OK)
 
     @extend_schema(
         responses={
@@ -141,7 +143,9 @@ class SportsPersonViewSet(viewsets.ModelViewSet):
         unique_teams_list = []
         for unique_team in team:
             unique_teams_list.append(unique_team.team)
-        return Response({'unique_teams': unique_teams_list})
+        return Response(
+            {'unique_teams': unique_teams_list},
+            status=status.HTTP_200_OK)
 
     @extend_schema(
         parameters=[

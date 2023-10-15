@@ -31,4 +31,4 @@ class SquadViewSet(ModelViewSet):
 
     def get_queryset(self):
         """Retrieve Squad API"""
-        return self.queryset.order_by('-performance_date_time')
+        return self.queryset.order_by('performance_date_time', 'id')

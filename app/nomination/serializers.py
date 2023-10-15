@@ -4,7 +4,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
 )
-# from django_filters import DateFilter
+from django_filters import CharFilter, FilterSet
 # import django_filters
 # import re
 
@@ -12,6 +12,16 @@ from nomination.models import (
     Nomination,
     ConditionPerformance,
 )
+
+
+class NominationFilter(FilterSet):
+    """Filter for Nomination"""
+    nomination_name = CharFilter(
+        field_name='nomination_name', lookup_expr='icontains')
+
+    class Meta:
+        model = Nomination
+        fields = ['nomination_name',]
 
 
 class NominationSerializer(ModelSerializer):

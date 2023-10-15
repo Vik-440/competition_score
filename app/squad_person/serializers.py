@@ -6,6 +6,7 @@ from rest_framework.serializers import (
     ValidationError,
 )
 from datetime import timedelta
+import django_filters
 
 from squad_person.models import SquadPerson
 from nomination.models import Nomination, ConditionPerformance
@@ -13,15 +14,16 @@ from sports_person.models import SportsPerson  # , PersonRank
 from squad.models import Squad
 
 
-# class SquadPersonSerializer(ModelSerializer):
+class SquadPersonFilter(django_filters.FilterSet):
+    """Filter for fields SquadPerson"""
+    squad_id = django_filters.CharFilter(
+        field_name='squad_id', lookup_expr='exact')
+    sports_person_id = django_filters.CharFilter(
+        field_name='sports_person_id', lookup_expr='exact')
 
-#     class Meta:
-#         model = SquadPerson
-#         fields = '__all__'
-#         read_only_fields = ['id']
-
-# from rest_framework import serializers
-# from .models import SquadPerson, Nomination, ConditionPerformance, PersonRank
+    class Meta:
+        model = SquadPerson
+        fields = ['squad_id', 'sports_person_id']
 
 
 class SquadPersonSerializer(ModelSerializer):
@@ -31,7 +33,8 @@ class SquadPersonSerializer(ModelSerializer):
 
     class Meta:
         model = SquadPerson
-        exclude = ('id',)
+        fields = '__all__'
+        read_only_fields = ('id',)
 
     def validate(self, attrs):
         """
@@ -69,8 +72,6 @@ class SquadPersonSerializer(ModelSerializer):
 
         # Validate the age.
         if condition_performance.max_age_person is not None:
-            # print(nomination.nomination_start_date_time - timedelta(
-            #         days=condition_performance.max_age_person * 365).date())
             if attrs['sports_person_id'].birth_day < (
                 nomination.nomination_start_date_time - timedelta(
                     days=condition_performance.max_age_person * 365)).date():
@@ -85,8 +86,9 @@ class SquadPersonSerializer(ModelSerializer):
 
         # Validate the weight.
         if condition_performance.min_weight_person is not None:
-            if attrs['sports_person_id'].weight_kg < (
-                    condition_performance.min_weight_person):
+            if (attrs['sports_person_id'].weight_kg is None or
+                attrs['sports_person_id'].weight_kg <
+                    (condition_performance.min_weight_person)):
                 raise ValidationError({'sports_person_id': (
                     'The sports person is too light.')})
         if condition_performance.max_weight_person is not None:
@@ -97,8 +99,9 @@ class SquadPersonSerializer(ModelSerializer):
 
         # Validate the height.
         if condition_performance.min_height_person is not None:
-            if attrs['sports_person_id'].height_cm < (
-                    condition_performance.min_height_person):
+            if (attrs['sports_person_id'].height_cm is None or
+                attrs['sports_person_id'].height_cm <
+                    (condition_performance.min_height_person)):
                 raise ValidationError({'sports_person_id': (
                     'The sports person is too short.')})
         if condition_performance.min_height_person is not None:
@@ -108,15 +111,25 @@ class SquadPersonSerializer(ModelSerializer):
                     'The sports person is too tall.')})
 
         # Validate the rank.
-        if condition_performance.min_rank_person is not None:
-            if attrs['sports_person_id'].person_rank_id.pk < (
-                    condition_performance.min_rank_person.pk):
+        if (str(type(condition_performance.min_rank_person))
+                != "<class 'NoneType'>"):
+            if (attrs['sports_person_id'].person_rank_id is None or
+                attrs['sports_person_id'].person_rank_id.pk <
+                    (condition_performance.min_rank_person.pk)):
                 raise ValidationError({'sports_person_id': (
                     'The sports person\'s rank is too low.')})
-        if condition_performance.min_rank_person is not None:
-            if attrs['sports_person_id'].person_rank_id.pk > (
-                    condition_performance.max_rank_person.pk):
+        if (str(type(condition_performance.max_rank_person))
+                != "<class 'NoneType'>"):
+            if (attrs['sports_person_id'].person_rank_id.pk >
+                    (condition_performance.max_rank_person.pk)):
                 raise ValidationError({'sports_person_id': (
                     'The sports person\'s rank is too high.')})
+
+        if condition_performance.max_qty_person is not None:
+            qty_person_on_squad = SquadPerson.objects.filter(
+                squad_id=attrs['squad_id'].id).count()
+            if qty_person_on_squad >= condition_performance.max_qty_person:
+                raise ValidationError({'max_qty_person': (
+                    'The sports person\'s are too much in squad.')})
 
         return attrs

@@ -5,6 +5,7 @@ from django.db.models import (
     CharField,
     ForeignKey,
     DateTimeField,
+    AutoField,
     CASCADE,
 )
 from django.core.validators import MinLengthValidator
@@ -15,6 +16,7 @@ from nomination.models import Nomination
 class Squad(Model):
     """Squad is table for to describe such temporary groups of athletes"""
 
+    id = AutoField(primary_key=True)
     squad_name = CharField(
         max_length=200,
         validators=[MinLengthValidator(3)]

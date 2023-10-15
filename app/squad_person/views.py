@@ -3,10 +3,14 @@
 from rest_framework.viewsets import (
     ModelViewSet,
 )
+from django_filters import rest_framework as filters
 from rest_framework.pagination import PageNumberPagination
 
 from squad_person.models import SquadPerson
-from squad_person.serializers import SquadPersonSerializer
+from squad_person.serializers import (
+    SquadPersonSerializer,
+    SquadPersonFilter,
+)
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -19,8 +23,8 @@ class SquadPersonViewSet(ModelViewSet):
     """View for manage Squad APIs."""
     serializer_class = SquadPersonSerializer
     queryset = SquadPerson.objects.all()
-    # filter_backends = [filters.DjangoFilterBackend]
-    # filterset_class = serializers.SportsPersonFilter
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = SquadPersonFilter
 
     pagination_class = StandardResultsSetPagination
 
@@ -32,3 +36,7 @@ class SquadPersonViewSet(ModelViewSet):
     def get_queryset(self):
         """Retrieve Squad API"""
         return self.queryset.order_by('-id')
+
+    # @action
+    # def get_by_id_squad(self):
+    #     """Retrieve all person by the id squad."""
