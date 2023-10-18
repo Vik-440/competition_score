@@ -70,12 +70,23 @@ class NominationViewSet(ModelViewSet):
         examples=[
             OpenApiExample(
                 name='squads in nomination',
-                value={'squads in nomination': [
-                    {'squad_1': '2023-11-11T08:00:00'},
-                    {'squad_2': '2023-11-11T08:05:00'},
-                    {'squad_3': '2023-11-11T08:10:00'},
-                    {'squad_4': '2023-11-11T08:15:00'},
-                ]},
+                value=[
+                    {
+                        "squad_id": 1,
+                        "squad_name": "Junior, DanceTeam",
+                        "performance_date_time": "2024-03-11 08:00"
+                    },
+                    {
+                        "squad_id": 2,
+                        "squad_name": "Junior, Dance 5-8 y.o.",
+                        "performance_date_time": "2024-03-11 08:03"
+                    },
+                    {
+                        "squad_id": 3,
+                        "squad_name": "Junior, Dance 3-5 y.o.",
+                        "performance_date_time": "2024-03-11 08:06"
+                    }
+                ],
                 response_only=True,
             ),
         ],
@@ -100,16 +111,16 @@ class NominationViewSet(ModelViewSet):
         Squad.objects.bulk_update(squad_to_sorted, ['performance_date_time'])
 
         # json_squad = json.loads(serialize('json', squad_to_sorted))
-        tmp_list = []
+        squad_response = []
         for squad in squad_to_sorted:
             tmp = {'squad_id': squad.id,
                    'squad_name': squad.squad_name,
                    'performance_date_time': (
                         squad.performance_date_time
                         .strftime("%Y-%m-%d %H:%M"))}
-            tmp_list.append(tmp)
+            squad_response.append(tmp)
         return Response(
-            tmp_list,
+            squad_response,
             status=status.HTTP_200_OK,
         )
 
