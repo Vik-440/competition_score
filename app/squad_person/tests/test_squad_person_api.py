@@ -62,7 +62,7 @@ NOMINATION_1 = {
     'nomination_start_date_time': '2023-11-11T08:00',
     'performance_second': 120,
     'delay_between_performance_second': 60,
-    'competition_id': 1,
+    'competition_id': 444,
 }
 CONDITION_PER_1 = {
     'men_person': True,
@@ -115,10 +115,7 @@ class SquadPersonApiTest(TestCase):
         self.assertEqual(result.status_code, status.HTTP_201_CREATED)
         rank_get = self.client.get(RANK_URL)
         self.assertEqual(rank_get.status_code, status.HTTP_200_OK)
-        # print(rank_get.json()['results'])
-        # rank_name = rank_get.json()['results'][0]['person_rank_name']
-        # self.assertEqual(rank_name, rank['person_rank_name'])
-        print('test create rank - OK')
+        print('\ntest create rank - OK')
         return None
 
     def create_sport_person(self, person: dict) -> None:
@@ -126,19 +123,21 @@ class SquadPersonApiTest(TestCase):
         result = self.client.post(SPORTS_PERSON_URL, person, format='json')
         if result.status_code != status.HTTP_201_CREATED:
             print(result.json())
+        person_id = result.json()['id']
         self.assertEqual(result.status_code, status.HTTP_201_CREATED)
         person_get = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(person_get.status_code, status.HTTP_200_OK)
         person_name = person_get.json()['results'][0]['last_name']
         self.assertEqual(person_name, person['last_name'])
         print('test create person - OK')
-        return None
+        return person_id
 
     def create_competition(self) -> None:
         """Create a simple competition"""
         result = self.client.post(COMPETITION_URL, COMPETITION, format='json')
         if result.status_code != status.HTTP_201_CREATED:
             print(result.json())
+        competition_id = result.json()['id']
         self.assertEqual(result.status_code, status.HTTP_201_CREATED)
         competition_get = self.client.get(COMPETITION_URL)
         self.assertEqual(competition_get.status_code, status.HTTP_200_OK)
@@ -146,10 +145,11 @@ class SquadPersonApiTest(TestCase):
             competition_get.json()['results'][0]['competition_name'])
         self.assertEqual(competition_name, COMPETITION['competition_name'])
         print('test create competition - OK')
-        return None
+        return competition_id
 
-    def create_nomination(self) -> None:
+    def create_nomination(self, competition_id) -> None:
         """Create a simple nomination."""
+        NOMINATION_1.update({'competition_id': competition_id})
         result = self.client.post(NOMINATION_URL, NOMINATION_1, format='json')
         if result.status_code != status.HTTP_201_CREATED:
             print(result.json())
@@ -190,8 +190,9 @@ class SquadPersonApiTest(TestCase):
         print('test create squad - OK')
         return None
 
-    def create_squad_person(self, sq_person: dict) -> None:
+    def create_squad_person(self, sq_person: dict, person_id: int) -> None:
         """Create a simple squad_person"""
+        sq_person.update({'sports_person_id': person_id})
         result = self.client.post(
             SQUAD_PERSON_URL, sq_person, format='json')
         if result.status_code != status.HTTP_201_CREATED:
@@ -213,16 +214,16 @@ class SquadPersonApiTest(TestCase):
         self.create_rank(RANK_2)
         self.create_rank(RANK_3)
 
-        self.create_sport_person(PERSON_1)
-        self.create_sport_person(PERSON_2)
+        person_1_id = self.create_sport_person(PERSON_1)
+        person_2_id = self.create_sport_person(PERSON_2)
 
-        self.create_competition()
+        competition_id = self.create_competition()
 
-        self.create_nomination()
+        self.create_nomination(competition_id)
 
         self.create_condition_performance()
 
         self.create_squad()
 
-        self.create_squad_person(SQUAD_PERSON_1)
-        self.create_squad_person(SQUAD_PERSON_2)
+        self.create_squad_person(SQUAD_PERSON_1, person_1_id)
+        self.create_squad_person(SQUAD_PERSON_2, person_2_id)
