@@ -127,6 +127,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.flake8
+tmp.py
 
 # Spyder project settings
 .spyderproject

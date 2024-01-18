@@ -28,6 +28,7 @@ from nomination.serializers import (
     NominationFilter,
 )
 from squad.models import Squad
+from squad.serializers import SquadSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -74,17 +75,23 @@ class NominationViewSet(ModelViewSet):
                     {
                         "squad_id": 1,
                         "squad_name": "Junior, DanceTeam",
-                        "performance_date_time": "2024-03-11 08:00"
+                        "performance_date_time": "2024-03-11 08:00",
+                        "nomination_id": 1,
+                        "nomination_name": "Dance 5-8 y.o."
                     },
                     {
                         "squad_id": 2,
                         "squad_name": "Junior, Dance 5-8 y.o.",
-                        "performance_date_time": "2024-03-11 08:03"
+                        "performance_date_time": "2024-03-11 08:03",
+                        "nomination_id": 1,
+                        "nomination_name": "Dance 5-8 y.o."
                     },
                     {
                         "squad_id": 3,
                         "squad_name": "Junior, Dance 3-5 y.o.",
-                        "performance_date_time": "2024-03-11 08:06"
+                        "performance_date_time": "2024-03-11 08:06",
+                        "nomination_id": 1,
+                        "nomination_name": "Dance 5-8 y.o."
                     }
                 ],
                 response_only=True,
@@ -110,15 +117,9 @@ class NominationViewSet(ModelViewSet):
 
         Squad.objects.bulk_update(squad_to_sorted, ['performance_date_time'])
 
-        # json_squad = json.loads(serialize('json', squad_to_sorted))
-        squad_response = []
-        for squad in squad_to_sorted:
-            tmp = {'squad_id': squad.id,
-                   'squad_name': squad.squad_name,
-                   'performance_date_time': (
-                        squad.performance_date_time
-                        .strftime("%Y-%m-%d %H:%M"))}
-            squad_response.append(tmp)
+        squad = Squad.objects.filter(nomination_id=nomination_id).order_by('performance_date_time')
+        squad_serializer = SquadSerializer(squad, many=True)
+        squad_response = squad_serializer.data
         return Response(
             squad_response,
             status=status.HTTP_200_OK,
