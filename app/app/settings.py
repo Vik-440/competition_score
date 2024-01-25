@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'competition',
     'nomination',
     'squad',
-    'squad_person'
+    'squad_person',
+    'squad_point',
 ]
 
 MIDDLEWARE = [
