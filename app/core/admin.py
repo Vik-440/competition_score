@@ -21,6 +21,9 @@ class UserAdmin(BaseUserAdmin):
                 'fields': (
                     'is_active',
                     'is_staff',
+                    'is_judge',
+                    'is_coach',
+                    'is_observer',
                     'is_superuser',
                 )
             }
@@ -38,6 +41,9 @@ class UserAdmin(BaseUserAdmin):
                 'name',
                 'is_active',
                 'is_staff',
+                'is_judge',
+                'is_coach',
+                'is_observer',
                 'is_superuser',
             ),
         }),

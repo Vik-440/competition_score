@@ -29,6 +29,30 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
+    
+    def create_coach(self, email, password=None, **extra_fields):
+        """Create and return new coach."""
+        user = self.create_user(email, password, **extra_fields)
+        user.is_coach = True
+        user.save(using=self._db)
+
+        return user
+    
+    def create_judge(self, email, password=None, **extra_fields):
+        """Create and return new judge."""
+        user = self.create_user(email, password, **extra_fields)
+        user.is_judge = True
+        user.save(using=self._db)
+
+        return user
+    
+    def create_observer(self, email, password=None, **extra_fields):
+        """Create and return new observer."""
+        user = self.create_user(email, password, **extra_fields)
+        user.is_observer = True
+        user.save(using=self._db)
+
+        return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -37,6 +61,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+
+    is_coach = models.BooleanField(default=False)
+    is_judge = models.BooleanField(default=False)
+    is_observer = models.BooleanField(default=False)
 
     objects = UserManager()
 

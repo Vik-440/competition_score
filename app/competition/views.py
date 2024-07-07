@@ -1,12 +1,12 @@
 """"Views for the Competition APIs."""
 
-# from rest_framework.authentication import TokenAuthentication
-# from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework import viewsets, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django.shortcuts import get_object_or_404
@@ -26,6 +26,7 @@ from competition.serializers import (
 )
 from squad.models import Squad
 from squad_person.models import SquadPerson
+from user.permissions import IsSuperuser, IsStaff, IsCoach, IsJudge, IsObserver
 
 
 class StandardResultSetPagination(PageNumberPagination):
@@ -42,10 +43,20 @@ class CompetitionViewSet(viewsets.ModelViewSet):
     filterset_class = CompetitionFilter
     pagination_class = StandardResultSetPagination
 
-    # authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
     paginator = PageNumberPagination()
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [IsAuthenticated]
+        elif self.action in ['create', 'update', 'partial_update', 'destroy', 'check_period_person_performance']:
+            permission_classes = [IsStaff]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
+
     @extend_schema(
         parameters=[
             OpenApiParameter(
@@ -93,7 +104,7 @@ class CompetitionViewSet(viewsets.ModelViewSet):
     )
     @action(detail=False, methods=['GET'])
     def check_period_person_performance(self, request: int = 1, period_sec: int = 3000):
-        """IN WORK - Check time period between performances of a person in different teams"""
+        """Check time period between performances of a person in different teams"""
         competition_id = request.GET.get('competition_id', '')
         period_sec = request.GET.get('time_period', '')
 
@@ -114,7 +125,6 @@ class CompetitionViewSet(viewsets.ModelViewSet):
                 "performance_date_time": performance_date_time,
             })
 
-        result_dict = defaultdict(list)
         final_result = []
 
         for person_id, performances in times.items():
@@ -136,15 +146,6 @@ class CompetitionViewSet(viewsets.ModelViewSet):
                         }]
                     })
                     
-        #             result_dict[person_id].append({
-        #                 'squad_id_1': performances[i - 1]['squad_id'],
-        #                 'performance_date_time_1': performances[i - 1]['performance_date_time'],
-        #                 'squad_id_2': performances[i]['squad_id'],
-        #                 'performance_date_time_2': performances[i]['performance_date_time'],
-        #             })
-        # final_result = [{"sport_person_id": key, "time_problem": value} for key, value in result_dict.items()]
-        # print(result_dict)
-
         if final_result:
             return Response(
             final_result,
