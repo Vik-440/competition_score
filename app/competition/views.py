@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django.shortcuts import get_object_or_404
@@ -17,7 +17,7 @@ from drf_spectacular.utils import (
     OpenApiParameter,
 )
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from competition.models import Competition
 from competition.serializers import (

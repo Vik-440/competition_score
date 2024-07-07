@@ -17,10 +17,7 @@ class IsStaff(BasePermission):
     """Permissions for staffs."""
 
     def has_permission(self, request, view):
-        has_permission = request.user.is_authenticated and request.user.is_staff
-        logger.debug(f"User {request.user.email} is_staff: {request.user.is_staff}, has_permission: {has_permission}")
-        return has_permission
-        # return request.user.is_authenticated and request.user.is_staff
+        return request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser)
     
 
 class IsCoach(BasePermission):
