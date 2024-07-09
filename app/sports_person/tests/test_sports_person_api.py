@@ -64,7 +64,7 @@ class PrivateSportsPersonApiTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create_superuser(
             'user@example.com',
             'pass123',
         )

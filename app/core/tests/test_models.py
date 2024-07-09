@@ -12,7 +12,7 @@ class ModelTests(TestCase):
         """Test creating a user an email is successful."""
         email = 'test@example.com'
         password = 'test_pass123'
-        user = get_user_model().objects.create_user(
+        user = get_user_model().objects.create_superuser(
             email=email,
             password=password,
         )

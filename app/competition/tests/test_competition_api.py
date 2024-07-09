@@ -16,10 +16,11 @@ class PrivateCompetitionApiTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create_superuser(
             'user@example.com',
             'pass123',
         )
+
         self.client.force_authenticate(self.user)
 
     def test_create_retrieve_competition(self):

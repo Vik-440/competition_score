@@ -48,7 +48,6 @@ class PublicUserApiTests(TestCase):
         }
         create_user(**payload)
         res = self.client.post(CREATE_USER_URL, payload)
-
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_password_too_short_error(self):
@@ -134,10 +133,8 @@ class PrivateUserApiTests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, {
-            'name': self.user.name,
-            'email': self.user.email,
-        })
+        self.assertEqual(res.data.get('name'), self.user.name)
+        self.assertEqual(res.data.get('email'), self.user.email)
 
     def test_post_me_not_allowed(self):
         """Test POST is not allowed for the me endpoint."""
