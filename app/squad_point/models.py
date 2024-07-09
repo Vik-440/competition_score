@@ -13,6 +13,7 @@ from django.core.validators import(
 )
 from judge_person.models import JudgePerson
 from squad.models import Squad
+from condition_point.models import ConditionPoint
 
 
 class SquadPoint(Model):
@@ -21,8 +22,9 @@ class SquadPoint(Model):
     judge_person_id = ForeignKey(JudgePerson, on_delete=CASCADE, null=False)
     point = IntegerField(
         null=False,
-        validators=[MinValueValidator(0), MaxValueValidator(10)],
+        validators=[MinValueValidator(0), MaxValueValidator(250)],
     )
+    condition_point_id = ForeignKey(ConditionPoint, on_delete=CASCADE, null=False)
 
     class Meta:
-        unique_together = ('squad_id', 'judge_person_id')
+        unique_together = ('squad_id', 'judge_person_id', 'condition_point_id')
