@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'squad',
     'squad_person',
     'squad_point',
+    'condition_point',
 ]
 
 MIDDLEWARE = [

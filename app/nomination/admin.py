@@ -1,5 +1,5 @@
 """
-Django admin customization nomination and conditions.
+Django admin customization nomination and conditions of condition.
 """
 from django.contrib import admin
 # from django.contrib.auth.admin import UserAdmin as BaseUserAdmin

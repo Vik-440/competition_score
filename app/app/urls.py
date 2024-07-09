@@ -41,4 +41,5 @@ urlpatterns = [
     path('api/', include('squad.urls')),
     path('api/', include('squad_person.urls')),
     path('api/', include('squad_point.urls')),
+    path('api/', include('condition_point.urls')),
 ]
