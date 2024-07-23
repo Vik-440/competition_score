@@ -39,9 +39,6 @@ class Nomination(Model):
     delay_between_performance_second = IntegerField()
 
 
-# @receiver(post_save, sender=Nomination)
-# def model_post_save(sender, instance, **kwargs):
-#     notify_channel_layer(instance)
 @receiver(post_save, sender=Nomination)
 def model_post_save(sender, instance, created, **kwargs):
     if created:
@@ -50,16 +47,6 @@ def model_post_save(sender, instance, created, **kwargs):
         message = f'Nomination updated: {instance}'
 
     notify_channel_layer(instance, message)
-
-def notify_channel_layer(instance, message):
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        'nomination_group_info',
-        {
-            'type': 'update_message',
-            'message': json.dumps({'id': instance.id, 'message': message})
-        }
-    )
 
 
 class ConditionPerformance(Model):
