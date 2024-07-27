@@ -1,15 +1,17 @@
-"""Views for QSquadPoint APIs"""
+"""Views for SquadPoint APIs"""
 
-from rest_framework.viewsets import (
-    ModelViewSet,
-)
-from django_filters import rest_framework as filters
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from django_filters import rest_framework as filters
+from django.db.models import Sum
 
 from squad_point.models import SquadPoint
 from squad_point.serializers import(
     SquadPointSerializer,
     SquadPointFilter,
+    NominationResultSerializer,
 )
 
 
@@ -19,7 +21,7 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class SquadPersonViewSet(ModelViewSet):
+class SquadPointViewSet(ModelViewSet):
     """View for manage SquadPoint APIs."""
     serializer_class = SquadPointSerializer
     queryset = SquadPoint.objects.all()
@@ -36,3 +38,23 @@ class SquadPersonViewSet(ModelViewSet):
     def get_queryset(self):
         """Retrieve SquadPoint API"""
         return self.queryset.order_by('-id')
+    
+
+class NominationResultsView(APIView):
+    """View to retrieve squad results for a specific nomination"""
+    pagination_class = StandardResultsSetPagination
+
+    def get(self, request, nomination_id, *args, **kwargs):
+        try:
+            queryset = SquadPoint.objects.filter(squad_id__nomination_id=nomination_id)\
+                                         .values('squad_id__squad_name')\
+                                         .annotate(total_score=Sum('point'))\
+                                         .order_by('-total_score')
+
+            paginator = self.pagination_class()
+            page = paginator.paginate_queryset(queryset, request)
+            if page is not None:
+                return paginator.get_paginated_response(page)
+            return Response(queryset)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)

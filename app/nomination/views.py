@@ -30,7 +30,7 @@ from nomination.serializers import (
 from squad.models import Squad
 from squad.serializers import SquadSerializer
 
-from ws_channel.tasks import send_notification
+from ws_channel.notifications import send_notification
 
 
 class StandardResultsSetPagination(PageNumberPagination):

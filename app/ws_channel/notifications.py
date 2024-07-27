@@ -32,7 +32,7 @@ def notify_channel_layer(squads_data, message):
 
 def send_notification(instance, message):
     from squad.models import Squad
-    squads = Squad.objects.filter(nomination_id=instance.nomination_id)
+    squads = Squad.objects.all().order_by('performance_date_time')#filter(nomination_id=instance.nomination_id)
     squads_data = [
         {
             'nomination_name': squad.nomination_id.nomination_name,

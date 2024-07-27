@@ -3,7 +3,8 @@
 from rest_framework.serializers import (
     ModelSerializer,
     PrimaryKeyRelatedField,
-    ValidationError
+    CharField,
+    IntegerField,
 )
 import django_filters
 
@@ -33,3 +34,8 @@ class SquadPointSerializer(ModelSerializer):
         model = SquadPoint
         fields = '__all__'
         read_only_fields = ('id',)
+
+
+class NominationResultSerializer(ModelSerializer):
+    squad__squad_name = CharField()
+    total_score = IntegerField()
