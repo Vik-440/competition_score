@@ -30,6 +30,8 @@ from nomination.serializers import (
 from squad.models import Squad
 from squad.serializers import SquadSerializer
 
+from ws_channel.tasks import send_notification
+
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -116,6 +118,8 @@ class NominationViewSet(ModelViewSet):
             performance_time += time_delay_performance
 
         Squad.objects.bulk_update(squad_to_sorted, ['performance_date_time'])
+
+        send_notification(squad, f'Squad updated: {squad_to_sorted}')
 
         squad = Squad.objects.filter(nomination_id=nomination_id).order_by('performance_date_time')
         squad_serializer = SquadSerializer(squad, many=True)

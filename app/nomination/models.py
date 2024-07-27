@@ -17,12 +17,9 @@ from django.core.validators import (
 from sports_person.models import PersonRank
 from competition.models import Competition
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
-from .tasks import notify_channel_layer
-import json
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# from ws_channel.tasks import notify_channel_layer
 
 
 class Nomination(Model):
@@ -37,16 +34,6 @@ class Nomination(Model):
     nomination_start_date_time = DateTimeField()
     performance_second = IntegerField()
     delay_between_performance_second = IntegerField()
-
-
-@receiver(post_save, sender=Nomination)
-def model_post_save(sender, instance, created, **kwargs):
-    if created:
-        message = f'New nomination created: {instance}'
-    else:
-        message = f'Nomination updated: {instance}'
-
-    notify_channel_layer(instance, message)
 
 
 class ConditionPerformance(Model):

@@ -1,10 +1,9 @@
-import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
-class XyzConsumer(AsyncWebsocketConsumer):
+class Consumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.group_name = 'nomination_group_info'
+        self.group_name = 'performance_info'
 
         await self.channel_layer.group_add(
             self.group_name,

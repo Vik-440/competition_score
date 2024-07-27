@@ -10,7 +10,11 @@ from django.db.models import (
 )
 from django.core.validators import MinLengthValidator
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from nomination.models import Nomination
+from ws_channel.notifications import send_notification
 
 
 class Squad(Model):
@@ -39,3 +43,12 @@ class Squad(Model):
 
     class Meta:
         unique_together = ('squad_name', 'nomination_id')
+
+@receiver(post_save, sender=Squad)
+def model_post_save(sender, instance, created, **kwargs):
+    if created:
+        message = f'New squad created: {instance}'
+    else:
+        message = f'Squad updated: {instance}'
+
+    send_notification(instance, message)

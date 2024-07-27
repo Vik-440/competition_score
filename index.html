@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket Test</title>
+    <title>WebSocket competition_schedule</title>
+    <style>
+        ul {
+            list-style-type: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>WebSocket Test</h1>
+    <h1>WebSocket competition_schedule</h1>
     <div id="messages"></div>
     <script>
-        const socket = new WebSocket('ws://localhost:8000/ws/test_chanel/');
+        const socket = new WebSocket('ws://localhost:8000/ws/competition_schedule/');
 
         socket.onopen = function(event) {
             console.log('WebSocket is connected.');
@@ -22,7 +27,7 @@
             const data = JSON.parse(event.data);
             console.log('Received message:', data);
             const message = document.createElement('div');
-            message.textContent = 'Received message: ' + JSON.stringify(data);
+            message.appendChild(formatJsonAsTree(data));
             document.getElementById('messages').appendChild(message);
         };
 
@@ -39,6 +44,37 @@
             message.textContent = 'WebSocket error: ' + event;
             document.getElementById('messages').appendChild(message);
         };
+
+        function formatJsonAsTree(data) {
+            if (typeof data === 'string') {
+                data = JSON.parse(data);
+            }
+            const ul = document.createElement('ul');
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    const li = document.createElement('li');
+                    if (typeof data[key] === 'object' && data[key] !== null) {
+                        li.textContent = key + ':';
+                        li.appendChild(formatJsonAsTree(data[key]));
+                    } else {
+                        if (key === 'performance_date_time') {
+                            li.textContent = key + ': ' + formatDate(data[key]);
+                        } else {
+                            li.textContent = key + ': ' + data[key];
+                        }
+                    }
+                    ul.appendChild(li);
+                }
+            }
+            return ul;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false };
+            const formattedDate = date.toLocaleString('en-GB', options);
+            return formattedDate.replace(',', '');
+        }
     </script>
 </body>
 </html>
