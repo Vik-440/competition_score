@@ -50,11 +50,30 @@ class NominationResultsView(APIView):
                                          .values('squad_id__squad_name')\
                                          .annotate(total_score=Sum('point'))\
                                          .order_by('-total_score')
+            # results = [
+            #     {
+            #         'squad_name': item['squad_id__squad_name'],
+            #         'total_score': item['total_score'],
+            #     }
+            #     for item in queryset
+            # ]
 
+            # paginator = self.pagination_class()
+            # page = paginator.paginate_queryset(queryset, request)
+            # if page is not None:
+            #     return paginator.get_paginated_response(page)
+            # return Response(results)
             paginator = self.pagination_class()
             page = paginator.paginate_queryset(queryset, request)
-            if page is not None:
-                return paginator.get_paginated_response(page)
-            return Response(queryset)
+
+            results = [
+                {
+                    'squad_name': item['squad_id__squad_name'],
+                    'total_score': item['total_score'],
+                }
+                for item in page or queryset
+            ]
+
+            return paginator.get_paginated_response(results)
         except Exception as e:
             return Response({"error": str(e)}, status=500)
