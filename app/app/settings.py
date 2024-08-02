@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-# import os
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -102,16 +105,27 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     # 'HOST': os.environ.get('DB_HOST'),
+    #     # 'NAME': os.environ.get('DB_NAME'),
+    #     # 'USER': os.environ.get('DB_USER'),
+    #     # 'PASSWORD': os.environ.get('DB_PASS'),
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'HOST': 'localhost',
+    #     'NAME': 'comp_db',
+    #     'USER': 'vik',
+    #     'PASSWORD': '1544',
+    #     'PORT': '',
+    #     'TEST': {
+    #         'NAME': 'test_comp_db',
+    #     },
+    # },
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # 'HOST': os.environ.get('DB_HOST'),
-        # 'NAME': os.environ.get('DB_NAME'),
-        # 'USER': os.environ.get('DB_USER'),
-        # 'PASSWORD': os.environ.get('DB_PASS'),
-        'HOST': 'localhost',
-        'NAME': 'comp_db',
-        'USER': 'vik',
-        'PASSWORD': '1544',
+        'HOST': os.getenv('SQL_HOST'),
+        'NAME': os.getenv('SQL_NAME'),
+        'USER': os.getenv('SQL_USER'),
+        'PASSWORD': os.getenv('SQL_PASSWORD'),
         'PORT': '',
         'TEST': {
             'NAME': 'test_comp_db',
