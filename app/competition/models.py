@@ -27,7 +27,7 @@ class Competition(Model):
     def __str__(self):
         end_date = self.competition_date + timedelta(
             days=self.competition_qty_days)
-        return f'"id"={self.id}, {self.competition_name}, \
+        return f'"id" = {self.id}, {self.competition_name}, \
 {self.competition_city}, {self.competition_date} - {end_date}'
 
     class Meta:

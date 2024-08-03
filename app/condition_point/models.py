@@ -20,6 +20,7 @@ class ConditionPoint(Model):
         max_length=100,
         validators=[MinLengthValidator(5)],
         null=False,
+        unique=True,
     )
     min_range_point = IntegerField(
         default=0,
@@ -41,3 +42,6 @@ class ConditionPoint(Model):
         max_length=1000,
         null=True,
     )
+
+    def __str__(self):
+        return f'"id" = {self.id}, "condition_name" = {self.condition_name}'

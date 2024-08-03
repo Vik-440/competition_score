@@ -94,3 +94,6 @@ class ConditionPerformance(Model):
         on_delete=SET_NULL,
         null=True,
     )
+
+    def __str__(self):
+        return f'"condition_performance_id" = {self.id}, "nomination_id" = {self.nomination_id}'

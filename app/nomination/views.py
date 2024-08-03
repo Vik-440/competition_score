@@ -3,7 +3,6 @@
 # from rest_framework.authentication import TokenAuthentication
 # from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as filters
-# from django.core.serializers import serialize
 
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet

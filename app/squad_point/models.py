@@ -26,5 +26,9 @@ class SquadPoint(Model):
     )
     condition_point_id = ForeignKey(ConditionPoint, on_delete=CASCADE, null=False)
 
+    def __str__(self):
+        return f'"squad_id" = {self.squad_id}, "judge_person_id" = {self.judge_person_id}, \
+"condition_point_id" = {self.condition_point_id}, "point" = {self.point}'
+
     class Meta:
         unique_together = ('squad_id', 'judge_person_id', 'condition_point_id')

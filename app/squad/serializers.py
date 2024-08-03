@@ -6,8 +6,6 @@ from rest_framework.serializers import (
     SerializerMethodField,
     DateTimeField,
 )
-# from rest_framework import serializers
-
 from squad.models import Squad
 
 

@@ -10,14 +10,14 @@ import django_filters
 
 from squad_person.models import SquadPerson
 from nomination.models import Nomination, ConditionPerformance
-from sports_person.models import SportsPerson  # , PersonRank
+from sports_person.models import SportsPerson
 from squad.models import Squad
 
 
 class SquadPersonFilter(django_filters.FilterSet):
     """Filter for fields SquadPerson"""
     squad_id = django_filters.CharFilter(
-        field_name='squad_id', lookup_expr='exact')
+        field_name='squad_id', lookup_expr='contains')
     sports_person_id = django_filters.CharFilter(
         field_name='sports_person_id', lookup_expr='exact')
 
