@@ -1,5 +1,7 @@
 """Views for SquadPerson APIs."""
 
+# from rest_framework.authentication import TokenAuthentication
+# from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import (
     ModelViewSet,
 )
@@ -34,9 +36,5 @@ class SquadPersonViewSet(ModelViewSet):
     paginator = PageNumberPagination()
 
     def get_queryset(self):
-        """Retrieve Squad API"""
+        """Retrieve SquadPerson API"""
         return self.queryset.order_by('-id')
-
-    # @action
-    # def get_by_id_squad(self):
-    #     """Retrieve all person by the id squad."""

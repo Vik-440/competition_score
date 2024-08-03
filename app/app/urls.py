@@ -43,4 +43,5 @@ urlpatterns = [
     path('api/', include('squad_point.urls')),
     path('api/', include('condition_point.urls')),
     path('api/', include('community.urls')),
+    path('api/', include('user_community.urls')),
 ]

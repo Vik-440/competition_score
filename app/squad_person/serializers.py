@@ -16,9 +16,9 @@ from squad.models import Squad
 
 class SquadPersonFilter(django_filters.FilterSet):
     """Filter for fields SquadPerson"""
-    squad_id = django_filters.CharFilter(
-        field_name='squad_id', lookup_expr='contains')
-    sports_person_id = django_filters.CharFilter(
+    squad_id = django_filters.NumberFilter(
+        field_name='squad_id', lookup_expr='exact')
+    sports_person_id = django_filters.NumberFilter(
         field_name='sports_person_id', lookup_expr='exact')
 
     class Meta:
