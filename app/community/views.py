@@ -23,11 +23,12 @@ class StandardResultsSetPagination(PageNumberPagination):
 class CommunityViewSet(ModelViewSet):
     """Views for manage Community APIs."""
     serializer_class = CommunitySerializer
-    queryset = Community.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_class = CommunityFilter
     pagination_class = StandardResultsSetPagination
     paginator = PageNumberPagination()
+    queryset = Community.objects.all()
+    # lookup_field = 'name'
 
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]

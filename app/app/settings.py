@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'squad_point',
     'condition_point',
     'community',
-    'user_community',
+    # 'user_community',
 
     'channels',
 ]
