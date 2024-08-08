@@ -37,6 +37,12 @@ class UserManager(BaseUserManager):
 
         return user
     
+    def create_admin(self, email, password=None, **extra_fields):
+        """Create and return new admin."""
+        user = self.create_user(email, password, **extra_fields)
+        user.is_admin = True
+        user.save(using=self._db)
+
     def create_coach(self, email, password=None, **extra_fields):
         """Create and return new coach."""
         user = self.create_user(email, password, **extra_fields)
@@ -66,13 +72,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
     email = EmailField(max_length=255, unique=True)
     name = CharField(max_length=255)
-    community_id = ForeignKey(Community, on_delete=CASCADE, null=True, blank=True)
+    community_id = ForeignKey(Community, on_delete=CASCADE, default=1)
     is_active = BooleanField(default=True)
-    is_staff = BooleanField(default=False)
+    is_staff = BooleanField(default=False)      # position in developer group
 
-    is_coach = BooleanField(default=False)
-    is_judge = BooleanField(default=False)
-    is_observer = BooleanField(default=False)
+    is_admin = BooleanField(default=False)      # position in community
+    is_coach = BooleanField(default=False)      # position in community
+    is_judge = BooleanField(default=False)      # position in community
+    is_observer = BooleanField(default=False)   # position in community
 
     objects = UserManager()
 

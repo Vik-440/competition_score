@@ -17,7 +17,6 @@ PERSON_1 = {
     'first_name': 'Kate',
     'last_name': 'Paradiuk',
     'birth_day': '2005-04-02',
-    # 'rank': 'Masters',
     'city': 'Kyiv',
     'team': 'Junior',
     'gender': None,
@@ -25,17 +24,15 @@ PERSON_1 = {
     'height_cm': None,
 }
 PERSON_2 = {
-    'first_name': 'Olga',
-    'last_name': 'Test',
+    'first_name': 'Аріана',
+    'last_name': 'Мішакова',
     'birth_day': '2000-08-05',
-    # 'rank': 'Masters',
-    'city': 'Lviv',
-    'team': 'Angels',
-    'gender': None,
+    'city': 'Київ',
+    'team': 'Джуніор',
+    'gender': 'female',
     'weight_kg': None,
     'height_cm': None,
 }
-
 
 def create_sports_person(**params):
     """Create and return a simple sports_person"""
@@ -55,7 +52,6 @@ def create_sports_person(**params):
 #     def test_auth_required(self):
 #         """"Test auth is required to call API."""
 #         res = self.client.get(SPORTS_PERSON_URL)
-
 #         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
@@ -70,35 +66,28 @@ class PrivateSportsPersonApiTest(TestCase):
         )
         self.client.force_authenticate(self.user)
 
-    def test_retrieve_sports_people(self):
+    def test_a01_retrieve_sports_people(self):
         """Test retrieving a list of sports_people."""
         create_sports_person()
-        # create_sports_person()
-
         sports_people = SportsPerson.objects.all().order_by('-id')
         serializer = SportsPersonSerializer(sports_people, many=True)
-
         res = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data['results'], serializer.data)
 
-    def test_create_sports_person_api(self):
+    def test_a03_create_sports_person_api(self):
         """Test create one person"""
-
         res = self.client.post(SPORTS_PERSON_URL, PERSON_1, format='json')
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
         res_last_name = people.json()['results'][0]['last_name']
         self.assertEqual(res_last_name, PERSON_1['last_name'])
 
-    def test_create_list_sports_people_api(self):
+    def test_a05_create_list_sports_people_api(self):
         """Test create list of people"""
         sports_people = [PERSON_1, PERSON_2]
-
         res = self.client.post(SPORTS_PERSON_URL, sports_people, format='json')
-
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
@@ -107,36 +96,28 @@ class PrivateSportsPersonApiTest(TestCase):
             person['last_name'] for person in people.json()['results']]
         self.assertEqual(last_name_request.sort(), last_name_response.sort())
 
-    def test_create_duplicate_sports_person_api(self):
+    def test_a07_create_duplicate_sports_person_api(self):
         """Test create duplicate of person"""
-
         res = self.client.post(SPORTS_PERSON_URL, PERSON_1, format='json')
-
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         sports_person_dup = PERSON_1
-
         res = self.client.post(
             SPORTS_PERSON_URL, sports_person_dup, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
         res_last_name = people.json()['results'][0]['last_name']
         self.assertEqual(res_last_name, PERSON_1['last_name'])
 
-    def test_put_sports_person_api(self):
+    def test_a09_put_sports_person_api(self):
         """Test full change person"""
-
         res = self.client.post(SPORTS_PERSON_URL, PERSON_1, format='json')
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
         res_last_name = people.json()['results'][0]['last_name']
         self.assertEqual(res_last_name, PERSON_1['last_name'])
         person_id = people.json()['results'][0]['id']
-
         change_data = {
             'first_name': 'Kate',
             'last_name': 'Paradiuk',
@@ -148,62 +129,48 @@ class PrivateSportsPersonApiTest(TestCase):
             'weight_kg': None,
             'height_cm': None,
         }
-
         SPORTS_PERSON_ID = f'{SPORTS_PERSON_URL}{person_id}/'
-
         res = self.client.put(SPORTS_PERSON_ID, change_data, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-
         person_data = self.client.get(SPORTS_PERSON_ID)
         self.assertEqual(person_data.status_code, status.HTTP_200_OK)
         self.assertEqual(person_data.json()['birth_day'], '2004-04-02')
 
-    def test_patch_sports_person_api(self):
+    def test_a11_patch_sports_person_api(self):
         """Test part change person"""
-
         res = self.client.post(SPORTS_PERSON_URL, PERSON_1, format='json')
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
         res_last_name = people.json()['results'][0]['last_name']
         self.assertEqual(res_last_name, PERSON_1['last_name'])
         person_id = people.json()['results'][0]['id']
-
         change_data = {
             'birth_day': '2004-04-02',
         }
-
         SPORTS_PERSON_ID = f'{SPORTS_PERSON_URL}{person_id}/'
-
         res = self.client.patch(SPORTS_PERSON_ID, change_data, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-
         person_data = self.client.get(SPORTS_PERSON_ID)
         self.assertEqual(person_data.status_code, status.HTTP_200_OK)
         self.assertEqual(person_data.json()['birth_day'], '2004-04-02')
 
-    def test_delete_sports_person_api(self):
+    def test_a13_delete_sports_person_api(self):
         """Test delete person"""
-
         res = self.client.post(SPORTS_PERSON_URL, PERSON_1, format='json')
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
         res_last_name = people.json()['results'][0]['last_name']
         self.assertEqual(res_last_name, PERSON_1['last_name'])
         person_id = people.json()['results'][0]['id']
-
         SPORTS_PERSON_ID = f'{SPORTS_PERSON_URL}{person_id}/'
-
         res = self.client.delete(SPORTS_PERSON_ID)
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
-
         person_data = self.client.get(SPORTS_PERSON_ID)
         self.assertEqual(person_data.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_search_sports_person_api(self):
+    def test_a15_search_sports_person_api(self):
         """Test search by values person"""
         sports_people = [
             {
@@ -251,36 +218,25 @@ class PrivateSportsPersonApiTest(TestCase):
                 'height_cm': None,
             }
         ]
-
         res = self.client.post(SPORTS_PERSON_URL, sports_people, format='json')
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
-
         last_name_request = [person['last_name'] for person in sports_people]
         last_name_response = [
             person['last_name'] for person in people.json()['results']]
         self.assertEqual(last_name_request.sort(), last_name_response.sort())
-
         search_part_data = {'last_name': 'koz'}
         res = self.client.get(SPORTS_PERSON_URL, search_part_data)
         res_person = res.json()['results'][0]['last_name']
         searched_person_last_name = 'Kozak'
         self.assertEqual(res_person, searched_person_last_name)
 
-        # search_part_data = {'rank': 'ach'}
-        # res = self.client.get(SPORTS_PERSON_URL, search_part_data)
-        # res_person = res.json()['results'][0]['last_name']
-        # searched_person_last_name = 'Solovey'
-        # self.assertEqual(res_person, searched_person_last_name)
-
         search_part_data = {'team': 'Ang'}
         res = self.client.get(SPORTS_PERSON_URL, search_part_data)
         res_person = res.json()['results'][0]['last_name']
         searched_person_last_name = 'Mishakova'
         self.assertEqual(res_person, searched_person_last_name)
-
         search_part_data = {'city': 'ky'}
         res = self.client.get(SPORTS_PERSON_URL, search_part_data)
         res_person = res.json()['results'][0]['last_name']
@@ -299,7 +255,7 @@ class PrivateSportsPersonApiTest(TestCase):
         searched_person_last_name = 'Solovey'
         self.assertEqual(res_person, searched_person_last_name)
 
-    def test_get_unique_data_api(self):
+    def test_a17_get_unique_data_api(self):
         """Test getting unique teams, cities, ranks"""
         sports_people = [
             {
@@ -350,31 +306,22 @@ class PrivateSportsPersonApiTest(TestCase):
 
         res = self.client.post(SPORTS_PERSON_URL, sports_people, format='json')
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         people = self.client.get(SPORTS_PERSON_URL)
         self.assertEqual(people.status_code, status.HTTP_200_OK)
-
         last_name_request = [person['last_name'] for person in sports_people]
         last_name_response = [
             person['last_name'] for person in people.json()['results']]
         self.assertEqual(last_name_request.sort(), last_name_response.sort())
-
         unique_cities_url = f'{SPORTS_PERSON_URL}get_unique_cities/'
         unique_cities = self.client.get(unique_cities_url)
         cities = sorted([person['city'] for person in sports_people])
         self.assertEqual(sorted(unique_cities.data['unique_cities']), cities)
-
         unique_teams_url = f'{SPORTS_PERSON_URL}get_unique_teams/'
         unique_teams = self.client.get(unique_teams_url)
         teams = sorted([person['team'] for person in sports_people])
         self.assertEqual(sorted(unique_teams.data['unique_teams']), teams)
 
-        # unique_ranks_url = f'{SPORTS_PERSON_URL}get_unique_ranks/'
-        # unique_ranks = self.client.get(unique_ranks_url)
-        # ranks = sorted([person['rank'] for person in sports_people])
-        # self.assertEqual(sorted(unique_ranks.data['unique_ranks']), ranks)
-
-    def test_autocomplete_data_api(self):
+    def test_a19_autocomplete_data_api(self):
         """Test autocomplete fields for teams, cities, ranks"""
         sports_people = [
             {
@@ -433,13 +380,6 @@ class PrivateSportsPersonApiTest(TestCase):
         self.assertEqual(
             autocomplete_cities.data['auto_complete_cities'], ['Lviv'])
 
-        # part_autocomplete = {'rank': 'co'}
-        # autocomplete_ranks_url = f'{SPORTS_PERSON_URL}autocomplete_ranks/'
-        # autocomplete_ranks = self.client.get(
-        #     autocomplete_ranks_url, part_autocomplete)
-        # self.assertEqual(
-        #     autocomplete_ranks.data['auto_complete_ranks'], ['Coach'])
-
         part_autocomplete = {'team': 'an'}
         autocomplete_teams_url = f'{SPORTS_PERSON_URL}autocomplete_teams/'
         autocomplete_teams = self.client.get(
@@ -455,9 +395,7 @@ class PrivateSportsPersonApiTest(TestCase):
     #     )
     #     create_sports_person(user=other_user)
     #     create_sports_person(user=self.user)
-
     #     res = self.client.get(SPORTS_PERSON_URL)
-
     #     sports_people = SportsPerson.objects.filter(user=self.user)
     #     serializer = SportsPersonSerializer(sports_people, many=True)
     #     self.assertEqual(res.status_code, status.HTTP_200_OK)

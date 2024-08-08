@@ -34,8 +34,8 @@ class PersonRank(Model):
 class SportsPerson(Model):
     """SportsPerson object."""
     GENDER_CHOICES = (
-        ('men', 'men'),
-        ('women', 'woman'),
+        ('male', 'male'),
+        ('female', 'female'),
     )
 
     first_name = CharField(max_length=50, validators=[MinLengthValidator(3)])

@@ -36,7 +36,7 @@ PERSON_1 = {
     'person_rank_id': 3,
     'city': 'Kyiv',
     'team': 'Junior',
-    'gender': 'women',
+    'gender': 'female',
     'weight_kg': 55,
     'height_cm': 168,
 }
@@ -47,7 +47,7 @@ PERSON_2 = {
     'person_rank_id': 2,
     'city': 'Lviv',
     'team': 'Angels',
-    'gender': 'women',
+    'gender': 'female',
     'weight_kg': 65,
     'height_cm': 179,
 }

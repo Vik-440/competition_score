@@ -73,13 +73,10 @@ class SportsPersonViewSet(viewsets.ModelViewSet):
     queryset = SportsPerson.objects.all()
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = serializers.SportsPersonFilter
-
     pagination_class = StandardResultsSetPagination
-
+    paginator = PageNumberPagination()
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
-
-    paginator = PageNumberPagination()
 
     def create(self, request, *args, **kwargs):
         if isinstance(request.data, list):

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -48,7 +49,6 @@ INSTALLED_APPS = [
     'core',
     'user',
     'sports_person',
-    # 'person_rank',
     'judge_person',
     'competition',
     'nomination',
@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     'squad_point',
     'condition_point',
     'community',
-    # 'user_community',
 
     'channels',
 ]
@@ -108,10 +107,6 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     # 'default': {
-    #     # 'HOST': os.environ.get('DB_HOST'),
-    #     # 'NAME': os.environ.get('DB_NAME'),
-    #     # 'USER': os.environ.get('DB_USER'),
-    #     # 'PASSWORD': os.environ.get('DB_PASS'),
     #     'ENGINE': 'django.db.backends.postgresql',
     #     'HOST': 'localhost',
     #     'NAME': 'comp_db',
@@ -128,12 +123,21 @@ DATABASES = {
         'NAME': os.getenv('SQL_NAME'),
         'USER': os.getenv('SQL_USER'),
         'PASSWORD': os.getenv('SQL_PASSWORD'),
-        'PORT': '',
-        'TEST': {
-            'NAME': 'test_comp_db',
-        },
+        'PORT': '5432',
+        # 'TEST': {
+        #     'NAME': 'test_comp_db',
+        # },
     }
 }
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'test_comp_db',
+        'USER': 'vik',
+        'PASSWORD': '1544',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 
 
 # Password validation
@@ -185,23 +189,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
-# DRF_SPECTACULAR_SETTINGS = {
-#     "auto_schema_generation": True,
-#     "title": "My API",
-#     "version": "1.0.0",
-#     "auto_schema_generation_dirs": [
-#         os.path.join(BASE_DIR, "app.app.docs.sports_person_schema.yml"),
-#     ],
-# }
-
-# SPECTACULAR_SETTINGS = {
-#     'TITLE': 'TODO List API',
-#     'DESCRIPTION': 'API documentation for our app',
-#     'VERSION': '1.0.0',
-#     'SERVE_INCLUDE_SCHEMA': False,
-#     'COMPONENT_SPLIT_REQUEST': True
-#     # OTHER SETTINGS
-# }
 
 LOGGING = {
     'version': 1,

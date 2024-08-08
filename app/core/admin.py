@@ -21,6 +21,7 @@ class UserAdmin(BaseUserAdmin):
                 'fields': (
                     'is_active',
                     'is_staff',
+                    'is_admin',
                     'is_judge',
                     'is_coach',
                     'is_observer',
@@ -41,6 +42,7 @@ class UserAdmin(BaseUserAdmin):
                 'name',
                 'community_id',
                 'is_active',
+                'is_admin',
                 'is_staff',
                 'is_judge',
                 'is_coach',
