@@ -108,22 +108,22 @@ CHANNEL_LAYERS = {
 DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
-    #     'HOST': 'localhost',
-    #     'NAME': 'comp_db',
-    #     'USER': 'vik',
-    #     'PASSWORD': '1544',
-    #     'PORT': '',
+        # 'HOST': os.getenv('LOCAL_SQL_HOST'),
+        # 'NAME': os.getenv('LOCAL_SQL_NAME'),
+        # 'USER': os.getenv('LOCAL_SQL_USER'),
+        # 'PASSWORD': os.getenv('LOCAL_SQL_PASSWORD'),
+        # 'PORT': os.getenv('PORT'),
     #     'TEST': {
     #         'NAME': 'test_comp_db',
     #     },
     # },
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.getenv('SQL_HOST'),
-        'NAME': os.getenv('SQL_NAME'),
-        'USER': os.getenv('SQL_USER'),
-        'PASSWORD': os.getenv('SQL_PASSWORD'),
-        'PORT': '5432',
+        'HOST': os.getenv('SUP_SQL_HOST'),
+        'NAME': os.getenv('SUP_SQL_NAME'),
+        'USER': os.getenv('SUP_SQL_USER'),
+        'PASSWORD': os.getenv('SUP_SQL_PASSWORD'),
+        'PORT': os.getenv('PORT'),
         # 'TEST': {
         #     'NAME': 'test_comp_db',
         # },
@@ -132,11 +132,11 @@ DATABASES = {
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_comp_db',
-        'USER': 'vik',
-        'PASSWORD': '1544',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': os.getenv('TEST_SQL_HOST'),
+        'NAME': os.getenv('TEST_SQL_NAME'),
+        'USER': os.getenv('TEST_SQL_USER'),
+        'PASSWORD': os.getenv('TEST_SQL_PASSWORD'),
+        'PORT': os.getenv('PORT'),
     }
 
 

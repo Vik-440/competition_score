@@ -43,6 +43,8 @@ class UserManager(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
 
+        return user
+
     def create_coach(self, email, password=None, **extra_fields):
         """Create and return new coach."""
         user = self.create_user(email, password, **extra_fields)
